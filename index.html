@@ -408,16 +408,46 @@
             margin: 0;
         }
 
-        /* صندوق التبليغات الفارغ */
-        .notifications-box {
+        /* حاوية جلب التبليغات من تلغرام */
+        .telegram-feed-container {
+            margin-top: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
             background-color: #f8fafc;
-            border: 2px dashed #cbd5e1;
-            border-radius: 8px;
-            padding: 30px 20px;
-            text-align: center;
-            color: #64748b;
-            font-style: italic;
-            margin-top: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .telegram-feed-header {
+            background-color: #0088cc; /* لون التلغرام الرسمي */
+            color: #ffffff;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .telegram-feed-header svg {
+            fill: #ffffff;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* آيفريم التلغرام ليكون متجاوباً بالكامل */
+        .telegram-iframe-wrapper {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .telegram-iframe-wrapper iframe {
+            border: none;
+            width: 100%;
+            height: 100%;
         }
 
         footer {
@@ -507,7 +537,6 @@
 </head>
 <body>
 
-    <!-- شاشة اختيار اللغة الترحيبية (تظهر دائماً عند الدخول للموقع) -->
     <div class="language-overlay" id="langOverlay">
         <div class="lang-card">
             <img src="2.jpg" onerror="this.onerror=null; this.src='https://assets.onecompiler.app/42t37w25r/42t37vq8z/2.jpg';" alt="شعار مدرسة الجوادين" class="lang-card-img" />
@@ -521,7 +550,6 @@
         </div>
     </div>
 
-    <!-- الهيدر الثابت الذي يلتصق عند النزول -->
     <header>
         <div class="nav-container">
             <a href="#" class="logo">
@@ -570,7 +598,7 @@
 
                 <h2>التأسيس والتاريخ والنمو الأكاديمي</h2>
                 <p>
-                    يرجع تاريخ تأسيس متوسطة الجوادين للبنين إلى عام 2008م. ومنذ انطلاقتها في هذا العام، سعت المدرسة بشكل دؤوب إلى تحقيق رسالتها في رفع وتطوير المستوى العلمي والتربوي لجميع الطلاب الساكنين في منطقة الشعب والمناطق المجاورة والمحيطة بها. وبفضل هذه الجهود المستمرة، نجحت المدرسة في بناء واكتساب سمعة طيبة جداً وشهرة واسعة بين أهالي المنطقة والطلبة على حد سواء، ويعود الفضل في هذه السمعة إلى ما تمتلكه المدرسة من كادر تدريسي متميز يمتلك الرصانة العلمية والخبرة التربوية الكافية لإدارة وتوجيه الطلاب.
+                    يرجع تاريخ تأسيس متوسطة الجوادين للبنين إلى عام 2008م. ومنذ انطلاقتها في هذا العام، سعت المدرسة بشكل دؤوب إلى تحقيق رسالتها في رفع وتطوير المستوى العلمي والتربوي لجميع الطلاب الساكنين في منطقة الشعب والمناطق المجاورة والمحيطة بها. وبفضل هذه الجهود المستمرة، نجعت المدرسة في بناء واكتساب سمعة طيبة جداً وشهرة واسعة بين أهالي المنطقة والطلبة على حد سواء، ويعود الفضل في هذه السمعة إلى ما تمتلكه المدرسة من كادر تدريسي متميز يمتلك الرصانة العلمية والخبرة التربوية الكافية لإدارة وتوجيه الطلاب.
                 </p>
                 <p>
                     خلال مسيرتها التي تمتد لأكثر من عقد ونصف، قامت المدرسة بتخريج آلاف الطلبة الذين واصلوا مسيرتهم بنجاح في الإعداديات والجامعات العراقية المرموقة. وتتميز الإدارة بحرصها على الانضباط العالي والالتزام بالزي المدرسي الموحد، وتوطيد العلاقات الاجتماعية الهادفة بين الملاك التدريسي وأولياء الأمور من خلال مجالس الآباء والمعلمين الدورية لتذليل العقبات الدراسية التي قد تواجه الطلبة في مسيرتهم الأكاديمية.
@@ -603,10 +631,15 @@
                     <li><strong>المنصات الرسمية على مواقع التواصل الاجتماعي:</strong> تمتلك المدرسة منصات إلكترونية رسمية نشطة، وتبرز من بينها القناة الرسمية للمدرسة على تطبيق تلغرام، والتي تُستخدم كأداة إعلامية أساسية للتواصل مع الطلاب وأولياء الأمور أولاً بأول ونشر كل ما يتعلق بـالتبليغات والتعليمات الرسمية، الجداول الدراسية الأسبوعية وجداول الامتحانات، والنتائج بمجرد صدورها لضمان وصولها السريع للجميع.</li>
                 </ul>
 
-                <!-- قسم التبليغات الفارغ -->
-                <h2 id="notifications">التبليغات والتعميمات الإدارية</h2>
-                <div class="notifications-box" id="notificationsBox">
-                    لا توجد تبليغات جديدة حالياً. سيتم نشر الإعلانات الهامة والقرارات الإدارية هنا فور صدورها.
+                <h2 id="notifications">آخر التبليغات والتعميمات الإدارية</h2>
+                <div class="telegram-feed-container">
+                    <div class="telegram-feed-header" id="tgHeader">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.37.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+                        <span id="tgHeaderTitle">التبليغات الرسمية المباشرة من قناة التلغرام</span>
+                    </div>
+                    <div class="telegram-iframe-wrapper" id="tgWrapper">
+                        <iframe src="https://telegram.org/js/telegram-widget.js?22" id="tgIframe" data-telegram-discussion="jawadin3" data-comments-limit="5" style="display:none;"></iframe>
+                    </div>
                 </div>
 
                 <h2 id="vision">رؤية مدرسة الجوادين والأهداف الاستراتيجية</h2>
@@ -671,7 +704,6 @@
         </div>
     </footer>
 
-    <!-- الأكواد البرمجية للوظائف واختيار اللغة -->
     <script>
         // التحكم بالقائمة الجانبية (الثلاث نقاط)
         const menuBtn = document.getElementById('menuBtn');
@@ -698,6 +730,8 @@
         }
 
         function applyLanguage(lang) {
+            const wrapper = document.getElementById('tgWrapper');
+            
             if (lang === 'en') {
                 // تعديل اتجاه الصفحة للإنكليزية
                 document.documentElement.dir = 'ltr';
@@ -740,8 +774,9 @@
                 document.getElementById('linkTg2').innerText = '2nd Intermediate Channel';
                 document.getElementById('linkTg3').innerText = '3rd Intermediate Channel';
 
-                // تحديث صندوق التبليغات الفارغ بالإنكليزية
-                document.getElementById('notificationsBox').innerText = 'No new notifications currently. Important announcements and administrative decisions will be published here as soon as they are issued.';
+                // تحديث ترويسة التبليغات للإنكليزية وتضمين التلغرام
+                document.getElementById('tgHeaderTitle').innerText = 'Live Updates From Official Telegram Channel';
+                wrapper.innerHTML = `<iframe src="https://t.me/s/jawadin3" style="border: none; width: 100%; height: 100%;"></iframe>`;
 
                 // تحديث الفوتر
                 document.getElementById('mainFooter').innerHTML = `
@@ -775,11 +810,6 @@
                     <p>
                         The administration actively utilizes digital tools to engage with students, including online feedback surveys and its official Telegram channel to instantly publish study schedules, official notifications, and final results.
                     </p>
-                    
-                    <h2 id="notifications">Administrative Notifications</h2>
-                    <div class="notifications-box" id="notificationsBox">
-                        No new notifications currently. Important announcements and administrative decisions will be published here as soon as they are issued.
-                    </div>
                 `;
             } else {
                 // إعادة ضبط كل شيء للعربي الأصلي
@@ -820,8 +850,9 @@
                 document.getElementById('linkTg2').innerText = 'قناة الثاني متوسط';
                 document.getElementById('linkTg3').innerText = 'قناة الثالث متوسط';
 
-                // إعادة محتوى التبليغات للعربية
-                document.getElementById('notificationsBox').innerText = 'لا توجد تبليغات جديدة حالياً. سيتم نشر الإعلانات الهامة والقرارات الإدارية هنا فور صدورها.';
+                // إعادة ترويسة التبليغات وتغذية التلغرام للعربية
+                document.getElementById('tgHeaderTitle').innerText = 'التبليغات الرسمية المباشرة من قناة التلغرام';
+                wrapper.innerHTML = `<iframe src="https://t.me/s/jawadin3" style="border: none; width: 100%; height: 100%;"></iframe>`;
 
                 // إعادة الفوتر العربي
                 document.getElementById('mainFooter').innerHTML = `
