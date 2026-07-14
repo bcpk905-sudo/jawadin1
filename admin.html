@@ -52,6 +52,43 @@
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
+        /* تنسيق مخصص لزر اختيار ملف صورة من الهاتف */
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .file-input-button {
+            display: block;
+            width: 100%;
+            background-color: #f3f4f6;
+            color: #4b5563;
+            border: 2px dashed #cbd5e1;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .file-input-button:hover {
+            background-color: #e5e7eb;
+            border-color: #2563eb;
+        }
+        #announcementImage {
+            display: none;
+        }
+        .preview-container {
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        .preview-img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
         .btn-submit {
             background-color: #2563eb;
             color: #ffffff;
@@ -66,11 +103,6 @@
         }
         .btn-submit:hover {
             background-color: #1d4ed8;
-        }
-        .notice {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 5px;
         }
         .notification-item {
             background: #f8fafc;
@@ -93,6 +125,13 @@
             cursor: pointer;
             font-family: 'Tajawal', sans-serif;
         }
+        .uploaded-img {
+            max-width: 100%;
+            max-height: 150px;
+            display: block;
+            margin-top: 10px;
+            border-radius: 6px;
+        }
     </style>
 </head>
 <body>
@@ -100,6 +139,7 @@
     <div class="control-card">
         <h1>لوحة نشر التبليغات الرسمية 📣</h1>
         
+        <!-- حقل كلمة المرور لحماية النشر -->
         <div class="form-group">
             <label for="adminPassword">رمز الدخول السري للأستاذ:</label>
             <input type="password" id="adminPassword" placeholder="أدخل الرمز السري لتتمكن من النشر">
@@ -113,10 +153,17 @@
                 <textarea id="announcementText" rows="5" placeholder="اكتب تفاصيل الإعلان هنا..." required></textarea>
             </div>
 
+            <!-- ميزة اختيار ملف صورة مباشرة من الهاتف -->
             <div class="form-group">
-                <label for="announcementImage">رابط الصورة (اختياري):</label>
-                <input type="url" id="announcementImage" placeholder="مثال: https://i.ibb.co/image.png">
-                <p class="notice">يرجى رفع الصورة على أي موقع رفع خارجي (مثل imgbb) ولصق الرابط المباشر هنا.</p>
+                <label>إرفاق صورة من جهازك (اختياري):</label>
+                <div class="file-input-wrapper">
+                    <label for="announcementImage" class="file-input-button" id="fileLabel">📸 اضغط هنا لاختيار صورة من الاستوديو</label>
+                    <input type="file" id="announcementImage" accept="image/*">
+                </div>
+                <div class="preview-container" id="previewContainer">
+                    <p style="font-size: 12px; color: #64748b; margin-bottom: 5px;">معاينة الصورة المختارة:</p>
+                    <img id="imagePreview" class="preview-img" src="" alt="Preview">
+                </div>
             </div>
 
             <button type="submit" class="btn-submit">نشر التبليغ فوراً للطلاب 🚀</button>
@@ -126,11 +173,12 @@
         <div id="currentAnnouncements"></div>
     </div>
 
+    <!-- استدعاء إصدارات Firebase الحديثة والمستقرة لتجنب أي مشاكل بالمتصفح -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // تم ربط الرابط الخاص بقاعدتك هنا بنجاح
+        // إعدادات الاتصال بقاعدة البيانات الخاصة بك
         const firebaseConfig = {
             databaseURL: "https://jawadin-school1-default-rtdb.firebaseio.com/"
         };
@@ -138,25 +186,51 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // كلمة المرور التي يختارها الأستاذ (تستطيع تغييرها لأي شيء تريده)
+        // الرمز السري الموحد للأستاذ
         const CORRECT_PASSWORD = "jawadin_secret_2026"; 
 
         const form = document.getElementById('announcementForm');
+        const fileInput = document.getElementById('announcementImage');
+        const fileLabel = document.getElementById('fileLabel');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
         
+        let base64Image = ""; // متغير لحفظ الصورة بصيغة نصية
+
+        // عند اختيار صورة من الهاتف، نقوم بتحويلها لقراءة فورية ومعاينتها
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileLabel.innerText = "✅ تم اختيار: " + file.name;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    base64Image = event.target.result; // تخزين الصورة بنجاح
+                    imagePreview.src = base64Image;
+                    previewContainer.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fileLabel.innerText = "📸 اضغط هنا لاختيار صورة من الاستوديو";
+                previewContainer.style.display = "none";
+                base64Image = "";
+            }
+        });
+
+        // عند إرسال النموذج لنشر التبليغ
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            const passwordInput = document.getElementById('adminPassword').value;
+            const passwordInput = document.getElementById('adminPassword').value.trim();
             const textInput = document.getElementById('announcementText').value;
-            const imageInput = document.getElementById('announcementImage').value;
 
-            // التحقق من كلمة المرور لحماية الموقع
+            // 1. التحقق من كلمة المرور فوراً مع إعطاء تنبيه واضح
             if (passwordInput !== CORRECT_PASSWORD) {
                 alert('عذراً! رمز الدخول السري غير صحيح. لا يمكن النشر.');
                 return;
             }
 
-            // الحصول على تاريخ اليوم وتنسيقه
+            // 2. تنسيق التاريخ
             const today = new Date();
             const formattedDate = today.toLocaleDateString('ar-IQ', {
                 year: 'numeric',
@@ -166,21 +240,75 @@
                 minute: '2-digit'
             });
 
-            // دفع التبليغ الجديد إلى قاعدة البيانات
-            database.ref('announcements').push({
+            // 3. نشر البيانات في عقدة 'notifications' لتطابق الصفحة الرئيسية للموقع
+            database.ref('notifications').push({
                 text: textInput,
-                image: imageInput,
+                image: base64Image, // الصورة المرفوعة من الموبايل مباشرة
                 date: formattedDate
             }).then(() => {
-                alert('تم نشر التبليغ بنجاح وسيظهر للطلبة الآن!');
+                alert('تم نشر التبليغ بنجاح وسيظهر للطلبة الآن على الموقع الرئيسي!');
                 form.reset();
+                fileLabel.innerText = "📸 اضغط هنا لاختيار صورة من الاستوديو";
+                previewContainer.style.display = "none";
+                base64Image = "";
             }).catch((err) => {
                 alert('حدث خطأ أثناء النشر: ' + err.message);
             });
         });
 
-        // عرض التبليغات الحالية في صفحة التحكم مع إمكانية حذفها
+        // عرض التبليغات الحالية تحت لوحة التحكم مع إمكانية حذفها بشكل فوري
         const currentAnnouncements = document.getElementById('currentAnnouncements');
-        database.ref('announcements').on('value', (snapshot) => {
+        database.ref('notifications').on('value', (snapshot) => {
             const data = snapshot.val();
-            if (data
+            if (data) {
+                let html = '';
+                Object.keys(data).reverse().forEach(key => {
+                    const item = data[key];
+                    // التأكد من استخراج النص بشكل صحيح سواء كان كائناً أو نصاً بسيطاً
+                    let textContent = "";
+                    let imgTag = "";
+
+                    if (typeof item === 'object') {
+                        textContent = item.text || item.content || "";
+                        if (item.image) {
+                            imgTag = `<img src="${item.image}" class="uploaded-img" alt="Attached Image">`;
+                        }
+                    } else {
+                        textContent = item;
+                    }
+
+                    const itemDate = item.date ? `📅 ${item.date}` : "تبليغ غير مؤرخ";
+
+                    html += `
+                        <div class="notification-item">
+                            <button class="btn-delete" onclick="deleteAnnouncement('${key}')">حذف</button>
+                            <strong>${itemDate}</strong>
+                            <p style="margin-top: 10px; font-size: 14px; white-space: pre-wrap;">${textContent}</p>
+                            ${imgTag}
+                        </div>
+                    `;
+                });
+                currentAnnouncements.innerHTML = html;
+            } else {
+                currentAnnouncements.innerHTML = '<p style="color: #64748b; font-size: 14px;">لا توجد تبليغات حالياً.</p>';
+            }
+        });
+
+        // وظيفة الحذف للأستاذ مع حماية بالرمز السري
+        window.deleteAnnouncement = function(key) {
+            const passwordInput = document.getElementById('adminPassword').value.trim();
+            if (passwordInput !== CORRECT_PASSWORD) {
+                alert('يرجى إدخال رمز الدخول السري الصحيح في الحقل المخصص بالأعلى أولاً لتتمكن من الحذف!');
+                return;
+            }
+            if (confirm('هل أنت متأكد من رغبتك في حذف هذا التبليغ نهائياً؟')) {
+                database.ref('notifications').child(key).remove().then(() => {
+                    alert('تم حذف التبليغ بنجاح.');
+                }).catch((err) => {
+                    alert('فشل الحذف: ' + err.message);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
