@@ -186,7 +186,7 @@
             color: var(--color-blue);
         }
 
-        /* زر القائمة الجانبية (الثلاث نقاط) - مرتب بمحاذاة ممتازة */
+        /* زر القائمة الجانبية (الثلاث نقاط) */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -431,11 +431,11 @@
 
         @media (max-width: 768px) {
             .menu-toggle {
-                display: flex; /* إظهار نقاط القائمة الثلاث المنسدلة */
+                display: flex;
             }
 
             nav {
-                display: none; /* إخفاء القائمة العادية في الموبايل */
+                display: none;
                 position: absolute;
                 top: 100%;
                 left: 20px;
@@ -449,7 +449,7 @@
             }
 
             nav.active {
-                display: block; /* إظهار القائمة عند الضغط على النقاط الثلاث */
+                display: block;
             }
 
             nav ul {
@@ -481,10 +481,9 @@
 </head>
 <body>
 
-    <!-- شاشة اختيار اللغة الترحيبية -->
+    <!-- شاشة اختيار اللغة الترحيبية (تظهر دائماً عند الدخول للموقع) -->
     <div class="language-overlay" id="langOverlay">
         <div class="lang-card">
-            <!-- شعار المدرسة في المنتصف مع روابط الحماية والاحتياط للظهور الفوري -->
             <img src="2.jpg" onerror="this.onerror=null; this.src='https://assets.onecompiler.app/42t37w25r/42t37vq8z/2.jpg';" alt="شعار مدرسة الجوادين" class="lang-card-img" />
             <h2>أهلاً بكم في متوسطة الجوادين للبنين</h2>
             <p>يرجى اختيار لغة تصفح الموقع للبدء</p>
@@ -503,7 +502,6 @@
                 الجوادين<span>.</span>
             </a>
             
-            <!-- زر الثلاث نقاط المرتب لتصميم مستقر ومحاذي للوغو -->
             <button class="menu-toggle" id="menuBtn" aria-label="القائمة">
                 <span></span>
                 <span></span>
@@ -519,7 +517,7 @@
                 </ul>
             </nav>
             <div class="header-left">
-                <a href="https://t.me/jawadin3" target="_blank" class="lang-btn" id="btnTelegram">قناة التلغرام</a>
+                <a href="https://telegram.me/jawadin3" target="_blank" class="lang-btn" id="btnTelegram">قناة التلغرام</a>
             </div>
         </div>
     </header>
@@ -530,7 +528,7 @@
             <p id="heroDesc">صرح علمي متميز يسعى لبناء أجيال واعدة قادرة على التفوق والنجاح المستمر.</p>
             <div class="hero-buttons">
                 <a href="#system" class="btn btn-primary" id="btnHeroSystem">النظام الدراسي والمرافق</a>
-                <a href="https://t.me/jawadin3" target="_blank" class="btn btn-secondary" id="btnHeroResults">نتائج الامتحانات على تلغرام</a>
+                <a href="https://telegram.me/jawadin3" target="_blank" class="btn btn-secondary" id="btnHeroResults">نتائج الامتحانات على تلغرام</a>
             </div>
         </div>
     </section>
@@ -587,7 +585,7 @@
                     <li>تعزيز وبناء ثقة متبادلة وقوية بين الطلاب وإدارة المدرسة عبر قنوات التواصل الرقمية والاستبيانات الإلكترونية الفورية والمستمرة.</li>
                     <li>التطوير الشامل والمستمر للبيئة التعليمية والصفوف الدراسية والمرافق اللوجستية لتكون دائماً محفزة على التفوق والإبداع.</li>
                     <li>الاهتمام الفائق بطلبة الصف الثالث المتوسط وتقديم كافة أشكال الدعم العلمي، المحاضرات الإضافية والمراجعات المكثفة لضمان حصولهم على أعلى المعدلات والتميز في امتحانات البكالوريا الوزارية.</li>
-                    <li>الاستمرار في مواكبة أحدث الأساليب والوسائل الإلكترونية المتاحة في التعليم الإلكتروني، ونشر كافة الجداول والتبليغات ونتائج الامتحانات عبر منصات التواصل الرسمية لضمان أقصى درجات الشفافية والتواصل السريع والفعال.</li>
+                    <li>الاستمرار في مواكبة أحدث الأساليب والوسائل الإلكترونية المتاحة في التعليم الإلكتروني, ونشر كافة الجداول والتبليغات ونتائج الامتحانات عبر منصات التواصل الرسمية لضمان أقصى درجات الشفافية والتواصل السريع والفعال.</li>
                 </ol>
             </article>
         </main>
@@ -600,19 +598,19 @@
             <table class="info-table" id="infoTable">
                 <tr>
                     <th id="thEst">التأسيس</th>
-                    <td>2008م</td>
+                    <td id="tdEst">2008م</td>
                 </tr>
                 <tr>
                     <th id="thDir">المدير</th>
-                    <td>السيد فيصل برغش تايه</td>
+                    <td id="tdDir">السيد فيصل برغش تايه</td>
                 </tr>
                 <tr>
                     <th id="thLoc">المكان</th>
-                    <td>بغداد، الشعب، الرصافة الأولى</td>
+                    <td id="tdLoc">بغداد، الشعب، الرصافة الأولى</td>
                 </tr>
                 <tr>
                     <th id="thCountry">البلد</th>
-                    <td>العراق 🇮🇶</td>
+                    <td id="tdCountry">العراق 🇮🇶</td>
                 </tr>
                 <tr>
                     <th id="thCoord">الإحداثيات</th>
@@ -620,7 +618,7 @@
                 </tr>
                 <tr>
                     <th id="thWeb">الموقع الإلكتروني</th>
-                    <td><a href="https://t.me/jawadin3" target="_blank" id="sideTelegramLink">القناة الرسمية على تلغرام</a></td>
+                    <td><a href="https://telegram.me/jawadin3" target="_blank" id="sideTelegramLink">القناة الرسمية على تلغرام</a></td>
                 </tr>
             </table>
         </aside>
@@ -634,7 +632,7 @@
         </div>
     </footer>
 
-    <!-- الأكواد البرمجية للوظائف الحركية واختيار اللغة وتخزينها -->
+    <!-- الأكواد البرمجية للوظائف واختيار اللغة -->
     <script>
         // التحكم بالقائمة الجانبية (الثلاث نقاط)
         const menuBtn = document.getElementById('menuBtn');
@@ -651,21 +649,9 @@
             });
         });
 
-        // تشغيل نظام اللغات وتذكره عند الزيارات القادمة
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedLanguage = localStorage.getItem('userLanguage');
-            if (savedLanguage) {
-                // إذا كان المستخدم قد اختار اللغة سابقاً، ندخله مباشرة ونخفي الشاشة الترحيبية فوراً
-                document.getElementById('langOverlay').classList.add('hidden');
-                applyLanguage(savedLanguage);
-            }
-        });
-
+        // تشغيل نظام اللغات من جديد مع كل عملية دخول للموقع
         function selectLanguage(lang) {
-            // حفظ الخيار في متصفح المستخدم
-            localStorage.setItem('userLanguage', lang);
-            
-            // إخفاء الشاشة الترحيبية بحركة تلاشي ناعمة
+            // إخفاء الشاشة الترحيبية بحركة تلاشي
             document.getElementById('langOverlay').classList.add('hidden');
             
             // تطبيق اللغة المحددة
@@ -686,24 +672,33 @@
                 document.getElementById('btnTelegram').innerText = 'Telegram Channel';
 
                 // تحديث منطقة الهيرو
-                document.getElementById('heroTitle').innerText = 'Al-Jawadin Secondary School for Boys';
+                document.getElementById('heroTitle').innerText = 'Al-Jawadin Intermediate School for Boys';
                 document.getElementById('heroDesc').innerText = 'An outstanding scientific edifice that seeks to build promising generations capable of continuous excellence and success.';
                 document.getElementById('btnHeroSystem').innerText = 'Educational System & Facilities';
                 document.getElementById('btnHeroResults').innerText = 'Exam Results on Telegram';
 
-                // تحديث معلومات الكارت الجانبي
-                document.getElementById('sideCardTitle').innerText = 'Al-Jawadin Secondary School Logo';
+                // تحديث معلومات الكارت الجانبي بالكامل (العناوين والقيم)
+                document.getElementById('sideCardTitle').innerText = 'Al-Jawadin Intermediate School Logo';
+                
                 document.getElementById('thEst').innerText = 'Established';
+                document.getElementById('tdEst').innerText = '2008';
+
                 document.getElementById('thDir').innerText = 'Principal';
+                document.getElementById('tdDir').innerText = 'Mr. Faisal Barghash Tayeh';
+
                 document.getElementById('thLoc').innerText = 'Location';
+                document.getElementById('tdLoc').innerText = 'Baghdad, Al-Shaab, Al-Rusafa 1';
+
                 document.getElementById('thCountry').innerText = 'Country';
+                document.getElementById('tdCountry').innerText = 'Iraq 🇮🇶';
+
                 document.getElementById('thCoord').innerText = 'Coordinates';
                 document.getElementById('thWeb').innerText = 'Website';
                 document.getElementById('sideTelegramLink').innerText = 'Official Telegram Channel';
 
                 // تحديث الفوتر
                 document.getElementById('mainFooter').innerHTML = `
-                    <div>All rights reserved © 2026 Al-Jawadin Secondary School for Boys</div>
+                    <div>All rights reserved © 2026 Al-Jawadin Intermediate School for Boys</div>
                     <div class="footer-credits">
                         Designed & Programmed by: <span style="color: var(--color-blue);">Mahmoud Ahmed</span> | Tech Support: <a href="tel:07734894407">07734894407</a>
                     </div>
@@ -712,11 +707,11 @@
                 // تحويل لغة المقال إلى الإنكليزية
                 document.getElementById('mainArticle').innerHTML = `
                     <p>
-                        <strong>Al-Jawadin Secondary School for Boys</strong> is a government secondary school for boys located in the Iraqi capital, <strong>Baghdad</strong>, specifically in the <strong>Al-Shaab</strong> area under the Directorate of Education of Al-Rusafa First. The school is classified as one of the most famous and prominent secondary schools in the region, serving a large student population of over 1,000 students, and housing all three intermediate academic levels.
+                        <strong>Al-Jawadin Intermediate School for Boys</strong> is a government intermediate school for boys located in the Iraqi capital, <strong>Baghdad</strong>, specifically in the <strong>Al-Shaab</strong> area under the Directorate of Education of Al-Rusafa First. The school is classified as one of the most famous and prominent intermediate schools in the region, serving a large student population of over 1,000 students, and housing all three intermediate academic levels.
                     </p>
                     <h2>Establishment & Academic Growth</h2>
                     <p>
-                        The school was established in 2008. Since its inception, it has diligently worked to raise the scientific and educational level of all students in Al-Shaab and surrounding areas. It has earned a prominent reputation thanks to its highly qualified educational staff.
+                        The school was established in 2008. Since its inception, it has diligently worked to raise the scientific and educational level of all students in Al-Shaab and surrounding areas. It has earned an excellent reputation thanks to its highly qualified educational staff.
                     </p>
                     <h2 id="system">Educational System & Facilities</h2>
                     <p>
@@ -735,12 +730,46 @@
                     </p>
                 `;
             } else {
-                // في حال اختيار "العربية" أو تصفح افتراضي، يتم إعادة ضبط كل شيء للعربي
+                // إعادة ضبط كل شيء للعربي الأصلي
                 document.documentElement.dir = 'rtl';
                 document.documentElement.lang = 'ar';
                 
-                // نقوم بعمل تحديث سريع لإعادة المحتوى العربي الأصلي بكل تفاصيله
-                // وبما أن الكود مكتوب عربياً كقاعدة، فإن إعادة تطبيق العربية تعيد النصوص الأصلية تلقائياً.
+                document.getElementById('linkHome').innerText = 'الرئيسية';
+                document.getElementById('linkSystem').innerText = 'النظام الدراسي';
+                document.getElementById('linkDigital').innerText = 'التواصل الرقمي';
+                document.getElementById('linkVision').innerText = 'رؤية المدرسة';
+                document.getElementById('btnTelegram').innerText = 'قناة التلغرام';
+
+                document.getElementById('heroTitle').innerText = 'متوسطة الجوادين للبنين';
+                document.getElementById('heroDesc').innerText = 'صرح علمي متميز يسعى لبناء أجيال واعدة قادرة على التفوق والنجاح المستمر.';
+                document.getElementById('btnHeroSystem').innerText = 'النظام الدراسي والمرافق';
+                document.getElementById('btnHeroResults').innerText = 'نتائج الامتحانات على تلغرام';
+
+                document.getElementById('sideCardTitle').innerText = 'شعار متوسطة الجوادين للبنين';
+                
+                document.getElementById('thEst').innerText = 'التأسيس';
+                document.getElementById('tdEst').innerText = '2008م';
+
+                document.getElementById('thDir').innerText = 'المدير';
+                document.getElementById('tdDir').innerText = 'السيد فيصل برغش تايه';
+
+                document.getElementById('thLoc').innerText = 'المكان';
+                document.getElementById('tdLoc').innerText = 'بغداد، الشعب، الرصافة الأولى';
+
+                document.getElementById('thCountry').innerText = 'البلد';
+                document.getElementById('tdCountry').innerText = 'العراق 🇮🇶';
+
+                document.getElementById('thCoord').innerText = 'الإحداثيات';
+                document.getElementById('thWeb').innerText = 'الموقع الإلكتروني';
+                document.getElementById('sideTelegramLink').innerText = 'القناة الرسمية على تلغرام';
+
+                // إعادة الفوتر العربي
+                document.getElementById('mainFooter').innerHTML = `
+                    <div>جميع الحقوق محفوظة © 2026 متوسطة الجوادين للبنين</div>
+                    <div class="footer-credits">
+                        تصميم وبرمجة: <span style="color: var(--color-blue);">محمود أحمد</span> | للدعم الفني: <a href="tel:07734894407">07734894407</a>
+                    </div>
+                `;
             }
         }
     </script>
