@@ -658,14 +658,14 @@
         
         <main class="wiki-content">
             <article id="mainArticle">
-                <!-- سيتم ملء هذا المحتوى ديناميكياً حسب اختيار اللغة ليكون المظهر ممتازاً ومترجماً بالكامل -->
+                <!-- سيتم ملء هذا المحتوى ديناميكياً حسب اختيار اللغة -->
             </article>
         </main>
 
         <aside class="info-card">
             <div class="info-card-header">
                 <img src="2.jpg" onerror="this.onerror=null; this.src='https://assets.onecompiler.app/42t37w25r/42t37vq8z/2.jpg';" alt="شعار مدرسة الجوادين" class="info-card-img" />
-                <div class="info-card-title" id="sideCardTitle">متوسطة الجوادين للبنين</div>
+                <div class="info-card-title" id="sideCardTitle">شعار متوسطة الجوادين للبنين</div>
             </div>
             <table class="info-table" id="infoTable">
                 <tr>
@@ -695,6 +695,7 @@
                             <li><a href="https://telegram.me/Jawadin1" target="_blank" id="linkTg1">قناة الأول متوسط</a></li>
                             <li><a href="https://telegram.me/Jawadin2" target="_blank" id="linkTg2">قناة الثاني متوسط</a></li>
                             <li><a href="https://telegram.me/jawadin3" target="_blank" id="linkTg3">قناة الثالث متوسط</a></li>
+                            <li><a href="https://t.me/drrafid_zain971" target="_blank" id="linkTgStudent" style="font-weight: bold; color: #10b981;">📢 الدعم الطلابي</a></li>
                         </ul>
                     </td>
                 </tr>
@@ -722,7 +723,6 @@
 
         let currentLang = 'ar';
 
-        // كائنات النصوص باللغتين لترجمة كامل الصفحة تلقائياً
         const translations = {
             ar: {
                 article: `
@@ -757,7 +757,7 @@
                         <li><strong>الصفوف الدراسية:</strong> القاعات المخصصة لإعطاء الدروس والمحاضرات للطلبة في المراحل المختلفة ومجهزة بالوسائل الضرورية لتلقي العلم.</li>
                         <li><strong>غرفة الإدارة:</strong> المقر المخصص لإدارة المدرسة ومتابعة شؤونها التنظيمية والتربوية واللوجستية بقيادة المدير المتميز السيد فيصل برغش تايه ومساعديه.</li>
                         <li><strong>غرفة المدرسين:</strong> المكان المخصص لأعضاء الكادر التدريسي المتميز للاستراحة والتحضير العلمي والمناقشات المنهجية.</li>
-                        <li><strong>الساحات المدرسية:</strong> الفضاءات المفتوحة المخصصة لممارسة الأنشطة الرياضية المتنوعة مثل كرة القدم، واستراحة الطلاب وتجديد نشاطهم البدني والذهني بين الحصص الدراسية.</li>
+                        <li><strong>الساحات المدرسية:</strong> الفضاءات المفتوحة المخصصة لممارسة الأنشطة الرياضية المتنوعة مثل كرة القدم والكرة الطائرة، واستراحة الطلاب وتجديد نشاطهم البدني والذهني بين الحصص الدراسية.</li>
                         <li><strong>المرشد التربوي:</strong> توفر المدرسة مكتباً خاصاً بالإرشاد التربوي والنفسي لمساعدة الطلاب على حل مشاكلهم الشخصية والأكاديمية، وتهيئة بيئة صحية تحفزهم على التفوق الدراسي وصقل شخصياتهم القيادية والاجتماعية.</li>
                     </ul>
 
@@ -937,6 +937,7 @@
                 tg1: "قناة الأول متوسط",
                 tg2: "قناة الثاني متوسط",
                 tg3: "قناة الثالث متوسط",
+                tgStudent: "📢 الدعم الطلابي",
                 footerText: "جميع الحقوق محفوظة © 2026 متوسطة الجوادين للبنين",
                 footerCredits: `تصميم وبرمجة: <span style="color: var(--color-blue);">محمود أحمد</span> | للدعم الفني: <a href="tel:07734894407">07734894407</a>`
             },
@@ -967,6 +968,7 @@
                 tg1: "1st Grade Channel",
                 tg2: "2nd Grade Channel",
                 tg3: "3rd Grade Channel",
+                tgStudent: "📢 Student Support",
                 footerText: "All Rights Reserved © 2026 Al-Jawadin School for Boys",
                 footerCredits: `Designed & Developed by: <span style="color: var(--color-blue);">Mahmoud Ahmed</span> | Tech Support: <a href="tel:07734894407">07734894407</a>`
             }
@@ -1011,6 +1013,7 @@
             document.getElementById('linkTg1').innerText = st.tg1;
             document.getElementById('linkTg2').innerText = st.tg2;
             document.getElementById('linkTg3').innerText = st.tg3;
+            document.getElementById('linkTgStudent').innerText = st.tgStudent;
 
             document.getElementById('footerText').innerText = st.footerText;
             document.getElementById('footerCredits').innerHTML = st.footerCredits;
