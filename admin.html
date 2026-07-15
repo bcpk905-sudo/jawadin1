@@ -976,20 +976,14 @@
         }
 
         function sendPrivateNotification() {
-            if (!currentStudentId) return;
-
-            const text = document.getElementById('privateNotificationText').value.trim();
-
-            database.ref(`students/${currentStudentId}/private_notification`).set(text).then(() => {
-                if (text === '') {
-                    alert('تم مسح التبليغ المخصص للطالب بنجاح.');
-                } else {
-                    alert('تم حفظ وإرسال التبليغ المخصص للطالب بنجاح لصفحته الشخصية!');
-                }
-                loadAllStudents();
-            }).catch(err => {
-                alert('خطأ أثناء إرسال التبليغ الخاص.');
-            });
+    if (!currentStudentId) return;
+    const text = document.getElementById('privateNotificationText').value.trim();
+    // تأكد أن المسار هنا لا يحتوي على حرف s في النهاية
+    database.ref(`students/${currentStudentId}/private_notification`).set(text).then(() => {
+        alert('تم إرسال التبليغ المخصص للطالب!');
+        loadAllStudents();
+    });
+};
         }
     </script>
 </body>
