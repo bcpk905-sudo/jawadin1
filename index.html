@@ -110,6 +110,135 @@
             box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
 
+        /* نافذة تسجيل الدخول المنبثقة الرهيبة */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background-color: #ffffff;
+            padding: 35px 25px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        html[dir="ltr"] .modal-close {
+            left: auto;
+            right: 15px;
+        }
+
+        .modal-close:hover {
+            color: var(--color-blue);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--color-text-dark);
+            margin-bottom: 5px;
+        }
+
+        .modal-header p {
+            font-size: 13.5px;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            text-align: right;
+        }
+
+        html[dir="ltr"] .form-group {
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: var(--font-main);
+            font-size: 14px;
+            color: var(--color-text-dark);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--color-blue);
+        }
+
+        .modal-submit-btn {
+            width: 100%;
+            background-color: var(--color-blue);
+            color: #ffffff;
+            border: none;
+            padding: 13px;
+            border-radius: 8px;
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .modal-submit-btn:hover {
+            background-color: var(--color-blue-hover);
+        }
+
         header {
             background-color: var(--bg-primary);
             border-bottom: 1px solid #e5e7eb;
@@ -603,6 +732,7 @@
 </head>
 <body>
 
+    <!-- شاشة اختيار اللغة الترحيبية -->
     <div class="language-overlay" id="langOverlay">
         <div class="lang-card">
             <img src="2.jpg" onerror="this.onerror=null; this.src='https://assets.onecompiler.app/42t37w25r/42t37vq8z/2.jpg';" alt="شعار مدرسة الجوادين" class="lang-card-img" />
@@ -613,6 +743,37 @@
                 <button class="lang-select-btn" onclick="selectLanguage('ar')">العربية</button>
                 <button class="lang-select-btn" onclick="selectLanguage('en')">English</button>
             </div>
+        </div>
+    </div>
+
+    <!-- نافذة تسجيل الدخول والإنشاء المنبثقة -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+            <div class="modal-header">
+                <h3 id="modalTitle">تسجيل دخول / إنشاء حساب</h3>
+                <p id="modalSub">أدخل معلوماتك للوصول إلى لوحتك والنتائج الفورية</p>
+            </div>
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group">
+                    <label for="studentName">اسم الطالب الثلاثي</label>
+                    <input type="text" id="studentName" class="form-control" placeholder="مثال: علي محمد حسن" required>
+                </div>
+                <div class="form-group">
+                    <label for="studentGrade">الصف الدراسي</label>
+                    <select id="studentGrade" class="form-control" required>
+                        <option value="" disabled selected>اختر صفك الدراسي</option>
+                        <option value="first">الأول متوسط</option>
+                        <option value="second">الثاني متوسط</option>
+                        <option value="third">الثالث متوسط</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="studentKey">رقم الهاتف أو رمز الدخول الخاص بك</label>
+                    <input type="text" id="studentKey" class="form-control" placeholder="مثال: 077XXXXXXX أو الرمز المخصص" required>
+                </div>
+                <button type="submit" class="modal-submit-btn">حفظ وإرسال المعلومات</button>
+            </form>
         </div>
     </div>
 
@@ -638,7 +799,7 @@
                 </ul>
             </nav>
             <div class="header-left">
-                <a href="#" class="lang-btn" id="btnTelegram">تسجيل دخول / إنشاء حساب</a>
+                <button class="lang-btn" id="btnAuthHeader" onclick="openAuthModal()">تسجيل دخول / إنشاء حساب</button>
             </div>
         </div>
     </header>
@@ -649,7 +810,7 @@
             <p id="heroDesc">صرح علمي متميز يسعى لبناء أجيال واعدة قادرة على التفوق والنجاح المستمر.</p>
             <div class="hero-buttons">
                 <a href="#system" class="btn btn-primary" id="btnHeroSystem">النظام الدراسي والمرافق</a>
-                <a href="https://telegram.me/jawadin3" target="_blank" class="btn btn-secondary" id="btnHeroResults">نتائجي والتبليغات المخصصة</a>
+                <button class="btn btn-secondary" id="btnHeroResults" onclick="openAuthModal()">نتائجي والتبليغات المخصصة</button>
             </div>
         </div>
     </section>
@@ -847,15 +1008,84 @@
         // دالة اختيار اللغة وإخفاء شاشة الترحيب
         function selectLanguage(lang) {
             currentLang = lang;
-            
-            // تحديث محتوى الـ Article الرئيسي باللغة المطلوبة
             document.getElementById('mainArticle').innerHTML = translations[lang].article;
-            
-            // إخفاء الـ Overlay بحركة انسيابية
             document.getElementById('langOverlay').classList.add('hidden');
-            
-            // جلب الإشعارات فور اختيار اللغة
             fetchNotifications();
+            checkLocalUser(); // التحقق إذا كان الطالب مسجلاً مسبقاً
+        }
+
+        // التحكم بالنوافذ المنبثقة للتحقق من الهوية
+        function openAuthModal() {
+            document.getElementById('authModal').classList.add('active');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.remove('active');
+        }
+
+        // التعامل مع إرسال فورم تسجيل الدخول / إنشاء الحساب
+        function handleAuthSubmit(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('studentName').value.trim();
+            const grade = document.getElementById('studentGrade').value;
+            const key = document.getElementById('studentKey').value.trim();
+
+            if (!name || !grade || !key) {
+                alert("يرجى ملء كافة الحقول المطلوبة!");
+                return;
+            }
+
+            // تنظيف المفتاح ليكون متوافقاً مع Firebase Keys (بدون نقاط أو علامات غريبة)
+            const sanitizedKey = key.replace(/[\.\#\$\[\]]/g, "_");
+
+            // حفظ البيانات في الـ Firebase Database تحت مسار /students
+            database.ref('students/' + sanitizedKey).set({
+                fullName: name,
+                grade: grade,
+                accessKey: key,
+                registeredAt: new Date().toISOString()
+            }).then(() => {
+                // حفظ الهوية محلياً في المتصفح لتذكر الطالب
+                localStorage.setItem('studentName', name);
+                localStorage.setItem('studentGrade', grade);
+                localStorage.setItem('studentKey', key);
+
+                // تغيير شكل الأزرار التفاعلية
+                updateHeaderWithUser(name);
+                
+                alert("تم تسجيل معلوماتك بنجاح في قاعدة البيانات!");
+                closeAuthModal();
+            }).catch((error) => {
+                console.error("Firebase Auth Error: ", error);
+                alert("حدث خطأ أثناء حفظ المعلومات، يرجى المحاولة لاحقاً.");
+            });
+        }
+
+        // فحص وجود حساب مسجل محلياً
+        function checkLocalUser() {
+            const savedName = localStorage.getItem('studentName');
+            if (savedName) {
+                updateHeaderWithUser(savedName);
+            }
+        }
+
+        // تحديث الهيدر باسم الطالب بعد التسجيل
+        function updateHeaderWithUser(name) {
+            const btnHeader = document.getElementById('btnAuthHeader');
+            const btnHero = document.getElementById('btnHeroResults');
+            
+            if (btnHeader) {
+                btnHeader.textContent = "أهلاً، " + name;
+                btnHeader.style.borderColor = "#10b981";
+                btnHeader.style.color = "#10b981";
+            }
+            if (btnHero) {
+                btnHero.textContent = "لوحتي الخاصة والنتائج";
+                btnHero.onclick = () => {
+                    alert("مرحباً بك مجدداً يا " + name + "! سيتم عرض لوحتك المخصصة ونتائجك قريباً فور رفعها من قبل الإدارة.");
+                };
+            }
         }
 
         // جلب الإشعارات من Firebase
@@ -865,7 +1095,6 @@
                 const data = snapshot.val();
                 if (data) {
                     notificationsBox.innerHTML = '';
-                    // ترتيب الإشعارات من الأحدث للأقدم
                     const sortedKeys = Object.keys(data).reverse();
                     sortedKeys.forEach((key) => {
                         const item = data[key];
