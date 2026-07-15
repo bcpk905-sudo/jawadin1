@@ -1320,8 +1320,7 @@
                         defaultGrades[p] = {};
                         subjects.forEach(sub => {
                             // شرط استثناء مادة الأدب للثالث متوسط في نصف السنة ونهاية السنة
-                            if (grade === '3' && sub === 'الادب' && (p === 'mid' || p === 'final')) 
-                                 if (grade === '3' && sub === 'الادب' && (p === 'mid' )) {
+                            if (grade === '3' && sub === 'الادب' && (p === 'mid' || p === 'final')) {
                                 // تترك فارغة وخالية للامتثال لشروط الثالث متوسط
                             } else {
                                 defaultGrades[p][sub] = "لم تعلن بعد";
@@ -1425,20 +1424,21 @@
                     <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
                         ${formatPeriod('c1_m1', 'الشهر الأول')}
                         ${formatPeriod('c1_m2', 'الشهر الثاني')}
+                        </div>
+                        
+                         <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                        ${formatPeriod('mid', 'نصف السنة')}
                     </div>
-                    
-                    <div class="radeg-section-title">📊 نتائج امتحانات نصف السنة </div>
-                    ${formatPeriod('mid', 'نصف السنة')}
                     
                     <div class="grade-section-title">📊 نتائج امتحانات الكورس الثاني </div>
                     <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
                         ${formatPeriod('c2_m1', 'الشهر الأول')}
                         ${formatPeriod('c2_m2', 'الشهر الثاني')}
-                       
+                        </div>
+                        
+                         <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                        ${formatPeriod('final', 'نهاية السنة')}
                     </div>
-                    <div class="grade-section-title">📊 نتائج امتحانات نهاية السنة </div>
-                     ${formatPeriod('final', 'نهاية السنة')}
-                     </div>
                 `;
 
                 // بناء قسم التبليغات المخصصة للطالب من الأستاذ أسفل قائمة الدرجات
