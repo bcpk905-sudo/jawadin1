@@ -8,14 +8,10 @@
     <style>
         :root {
             --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
+            --bg-secondary: #f3f4f6;
             --color-text-dark: #0f172a;
-            --color-text-muted: #64748b;
             --color-blue: #2563eb;
             --color-blue-hover: #1d4ed8;
-            --color-green: #10b981;
-            --color-green-hover: #059669;
-            --border-color: #e2e8f0;
             --font-main: 'Tajawal', sans-serif;
         }
 
@@ -27,1173 +23,131 @@
 
         body {
             font-family: var(--font-main);
-            background-color: #f8fafc;
+            background-color: var(--bg-primary);
             color: var(--color-text-dark);
-            line-height: 1.6;
+            line-height: 1.8;
+            overflow-x: hidden;
         }
 
-        /* --- الهيدر العلوي الأبيض الأنيق --- */
-        .navbar {
-            background-color: #ffffff;
-            border-bottom: 1px solid var(--border-color);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .navbar-brand {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--color-blue);
-            text-decoration: none;
-        }
-
-        .navbar-brand span {
-            color: var(--color-text-dark);
-        }
-
-        .navbar-menu {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-        }
-
-        .navbar-menu a {
-            text-decoration: none;
-            color: var(--color-text-muted);
-            font-weight: 700;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-
-        .navbar-menu a:hover, .navbar-menu a.active {
-            color: var(--color-blue);
-        }
-
-        /* زر تسجيل الدخول الجديد في الهيدر */
-        .btn-header-login {
-            background-color: #f1f5f9;
-            color: #475569;
-            border: 1px solid #cbd5e1;
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-family: var(--font-main);
-            font-weight: 700;
-            font-size: 13.5px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-header-login:hover {
-            background-color: var(--color-blue);
-            color: #ffffff;
-            border-color: var(--color-blue);
-        }
-
-        @media (max-width: 768px) {
-            .navbar-menu {
-                display: none;
-            }
-        }
-
-        /* --- قسم الهيرو (الواجهة الترحيبية) --- */
-        .hero {
-            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(241,245,249,1) 100%);
-            padding: 60px 20px;
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .hero h1 {
-            font-size: 36px;
-            font-weight: 800;
-            color: #0f172a;
-            margin-bottom: 10px;
-        }
-
-        .hero p {
-            font-size: 15px;
-            color: var(--color-text-muted);
-            max-width: 600px;
-            margin: 0 auto 25px auto;
-        }
-
-        .hero-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .btn-hero {
-            padding: 12px 24px;
-            font-family: var(--font-main);
-            font-weight: 700;
-            font-size: 14.5px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-hero-primary {
-            background-color: var(--color-blue);
-            color: #ffffff;
-            border: none;
-        }
-
-        .btn-hero-primary:hover {
-            background-color: var(--color-blue-hover);
-        }
-
-        .btn-hero-secondary {
-            background-color: transparent;
-            color: var(--color-blue);
-            border: 2px solid var(--color-blue);
-        }
-
-        .btn-hero-secondary:hover {
-            background-color: rgba(37, 99, 235, 0.05);
-        }
-
-        /* --- المحتوى الرئيسي وتخطيط الصفحة --- */
-        .main-layout {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 290px 1fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 900px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* كارت معلومات المدرسة الجانبي الكامل */
-        .school-profile-card {
-            background-color: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px 20px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            align-self: start;
-        }
-
-        .school-logo {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
-
-        .school-profile-card h3 {
-            font-size: 15px;
-            font-weight: 800;
-            color: var(--color-text-dark);
-            margin-bottom: 20px;
-        }
-
-        .school-info-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12.5px;
-        }
-
-        .school-info-table td {
-            padding: 8px 4px;
-            border-bottom: 1px dashed #f1f5f9;
-            text-align: right;
-        }
-
-        .school-info-table td.label {
-            color: var(--color-text-muted);
-            font-weight: 700;
-        }
-
-        .school-info-table td.value {
-            font-weight: 800;
-            color: var(--color-text-dark);
-        }
-
-        /* حاوية الأقسام الرئيسية */
-        .sections-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
-
-        /* العناوين والتصميم العام للأقسام */
-        .section-block h2 {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--color-text-dark);
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 10px;
-        }
-
-        /* التبليغات والتعميمات */
-        .announcements-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .announcement-card {
-            background-color: #ffffff;
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--color-blue);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .announcement-card .date {
-            font-size: 11.5px;
-            color: var(--color-text-muted);
-            font-weight: 700;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .announcement-card p {
-            font-size: 14px;
-            font-weight: 500;
-            color: #334155;
-            white-space: pre-line;
-            line-height: 1.7;
-        }
-
-        .announcement-card img {
-            max-width: 100%;
-            border-radius: 8px;
-            margin-top: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        /* قسم رؤية المدرسة وأهدافها */
-        .vision-card {
-            background-color: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .vision-card p {
-            font-size: 14.5px;
-            color: #334155;
-            margin-bottom: 15px;
-        }
-
-        .objectives-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .objectives-list li {
-            font-size: 13.5px;
-            font-weight: 500;
-            color: #475569;
-            padding-right: 20px;
-            position: relative;
-        }
-
-        .objectives-list li::before {
-            content: "✦";
-            position: absolute;
-            right: 0;
-            color: var(--color-blue);
-            font-weight: bold;
-        }
-
-        /* قسم الدعم الطلابي والشكاوى */
-        .support-card {
-            background-color: #fef2f2;
-            border: 1px solid #fee2e2;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .support-card p {
-            font-size: 14px;
-            color: #991b1b;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        .support-links {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .btn-support {
-            background-color: #ef4444;
-            color: #ffffff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 13.5px;
-            transition: background-color 0.3s;
-        }
-
-        .btn-support:hover {
-            background-color: #dc2626;
-        }
-
-        /* --- واجهة لوحة الطالب الشخصية بعد تسجيل الدخول --- */
-        .student-portal {
-            display: none;
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .portal-card {
-            background-color: #ffffff;
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
-
-        .portal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .portal-header h2 {
-            font-size: 18px;
-            font-weight: 800;
-        }
-
-        .student-profile {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background-color: #f8fafc;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 576px) {
-            .student-profile {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        .student-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #ffffff;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .student-info h3 {
-            font-size: 17px;
-            font-weight: 800;
-        }
-
-        .student-info p {
-            font-size: 13px;
-            color: var(--color-text-muted);
-        }
-
-        .private-notification-box {
-            background-color: #fff9db;
-            border: 1px solid #ffe066;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #856404;
-            display: none;
-        }
-
-        .grades-table-card {
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 15px;
-            border: 1px solid var(--border-color);
-        }
-
-        .grades-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .grades-table th, .grades-table td {
-            border: 1px solid #e2e8f0;
-            padding: 10px;
-            text-align: right;
-        }
-
-        .grades-table th {
-            background-color: #f8fafc;
-            font-weight: 700;
-        }
-
-        .grade-badge {
-            background-color: #e2e8f0;
-            color: #334155;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 12.5px;
-            display: inline-block;
-        }
-
-        .grade-badge.announced {
-            background-color: #dcfce7;
-            color: #15803d;
-        }
-
-        .grade-badge.not-announced {
-            background-color: #fef3c7;
-            color: #b45309;
-        }
-
-        /* --- النافذة المنبثقة للتسجيل والدخول (Modal) --- */
-        .modal-overlay {
-            display: none;
+        /* شاشة اختيار اللغة الترحيبية */
+        .language-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            z-index: 9999;
+            display: flex;
             justify-content: center;
             align-items: center;
-            padding: 15px;
+            color: #ffffff;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
-        .modal-content {
-            background-color: var(--bg-primary);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border-color);
-            position: relative;
-            animation: modalFadeIn 0.25s ease-out;
-            max-height: 90vh;
-            overflow-y: auto;
+        .language-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
 
-        @keyframes modalFadeIn {
-            from { transform: scale(0.95); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+        .lang-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
         }
 
-        .modal-close-btn {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background-color: #f1f5f9;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            color: var(--color-text-muted);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            z-index: 10;
-        }
-
-        .modal-close-btn:hover {
-            background-color: #e2e8f0;
-            color: var(--color-text-dark);
-        }
-
-        .modal-body {
-            padding: 25px;
-        }
-
-        .auth-tabs {
-            display: flex;
-            gap: 10px;
+        .lang-card-img {
+            max-width: 130px;
+            height: auto;
             margin-bottom: 20px;
-            margin-top: 15px;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
-        .tab-btn {
-            flex: 1;
-            padding: 11px;
-            background-color: #e2e8f0;
-            border: none;
-            border-radius: 8px;
-            font-family: var(--font-main);
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: #475569;
-        }
-
-        .tab-btn.active {
-            background-color: var(--color-blue);
-            color: #ffffff;
-        }
-
-        .card-inner h2 {
-            font-size: 17px;
+        .lang-card h2 {
+            font-size: 22px;
             font-weight: 800;
-            margin-bottom: 18px;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 8px;
+            margin-bottom: 8px;
         }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 700;
-            margin-bottom: 6px;
-            font-size: 13px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 11px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: var(--font-main);
+        .lang-card p {
             font-size: 14px;
-            outline: none;
-            transition: border-color 0.3s;
+            color: #e0f2fe;
+            margin-bottom: 30px;
         }
 
-        .form-control:focus {
-            border-color: var(--color-blue);
-        }
-
-        .row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .lang-buttons-container {
+            display: flex;
             gap: 15px;
+            justify-content: center;
         }
 
-        @media (max-width: 576px) {
-            .row {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .btn {
-            width: 100%;
-            padding: 11px;
-            background-color: var(--color-blue);
-            color: #ffffff;
+        .lang-select-btn {
+            background-color: #ffffff;
+            color: #1e3a8a;
             border: none;
+            padding: 12px 25px;
             border-radius: 8px;
             font-family: var(--font-main);
             font-weight: 700;
             font-size: 15px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .btn:hover {
-            background-color: var(--color-blue-hover);
+        .lang-select-btn:hover {
+            background-color: #f3f4f6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
 
-        /* رفع الملفات */
-        .file-upload-wrapper {
+        header {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
             position: relative;
         }
-        .file-upload-btn {
-            background-color: #f8fafc;
-            border: 2px dashed #cbd5e1;
-            color: #475569;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 13px;
-            display: block;
-        }
-        .file-upload-wrapper input[type="file"] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
 
-        /* نجاح التسجيل */
-        .success-register-box {
-            display: none;
-            text-align: center;
-            background-color: #dcfce7;
-            border: 1px solid #bbf7d0;
-            color: #15803d;
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        .success-register-box h3 {
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-
-        .success-register-box .student-code {
+        .logo {
             font-size: 24px;
             font-weight: 800;
+            color: var(--color-text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .logo span {
             color: var(--color-blue);
-            letter-spacing: 1px;
-            margin: 12px 0;
-            background-color: #ffffff;
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px dashed var(--color-blue);
-            display: inline-block;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- الهيدر الأبيض الأنيق المتواجد في الأعلى -->
-    <nav class="navbar">
-        <a href="#" class="navbar-brand">الجوادين<span>.</span></a>
-        <ul class="navbar-menu">
-            <li><a href="#" class="active">الرئيسية</a></li>
-            <li><a href="#vision-section">رؤية المدرسة</a></li>
-            <li><a href="#support-section">الدعم الطلابي</a></li>
-            <li><a href="#announcements-section">التبليغات</a></li>
-        </ul>
-        <!-- زر تسجيل الدخول الجديد المستبدل -->
-        <button class="btn-header-login" onclick="openAuthModal()">تسجيل دخول أو إنشاء حساب</button>
-    </nav>
-
-    <!-- واجهة الموقع الرئيسي بالكامل -->
-    <div id="mainWebsiteSection">
-        
-        <!-- قسم الهيرو (الواجهة الرئيسية الترحيبية) -->
-        <header class="hero">
-            <h1>متوسطة الجوادين للبنين</h1>
-            <p>صرح علمي متميز يسعى لبناء أجيال واعدة قادرة على التفوق والنجاح المستمر.</p>
-            <div class="hero-buttons">
-                <a href="#" class="btn-hero btn-hero-primary">النظام الدراسي والمرافق</a>
-                <!-- زر نتائجي والتبليغات المخصصة المستبدل والمربوط بالنافذة المنبثقة -->
-                <button class="btn-hero btn-hero-secondary" onclick="openAuthModal()">نتائجي والتبليغات المخصصة</button>
-            </div>
-        </header>
-
-        <!-- المحتوى من التبليغات والمعلومات الجانبية للمدرسة -->
-        <main class="main-layout">
-            
-            <!-- كارت الملف والتعريف الجانبي للمدرسة (كامل التفاصيل دون أي حذف) -->
-            <aside class="school-profile-card">
-                <img src="2.jpg" onerror="this.onerror=null; this.src='https://assets.onecompiler.app/42t37w25r/42t37vq8z/2.jpg';" class="school-logo" alt="شعار المدرسة">
-                <h3>شعار متوسطة الجوادين للبنين</h3>
-                <table class="school-info-table">
-                    <tr>
-                        <td class="label">التأسيس</td>
-                        <td class="value">2008م</td>
-                    </tr>
-                    <tr>
-                        <td class="label">المدير</td>
-                        <td class="value">السيد فيصل برغش تايه</td>
-                    </tr>
-                    <tr>
-                        <td class="label">المكان</td>
-                        <td class="value">بغداد، الشعب، الرصافة الأولى</td>
-                    </tr>
-                    <tr>
-                        <td class="label">الوزارة</td>
-                        <td class="value">وزارة التربية العراقية</td>
-                    </tr>
-                    <tr>
-                        <td class="label">المديرية</td>
-                        <td class="value">تربية الرصافة الأولى</td>
-                    </tr>
-                    <tr>
-                        <td class="label">المراحل الدراسية</td>
-                        <td class="value">الأول، الثاني، الثالث المتوسط</td>
-                    </tr>
-                    <tr>
-                        <td class="label">نوع المدرسة</td>
-                        <td class="value">حكومي (بنين)</td>
-                    </tr>
-                </table>
-            </aside>
-
-            <!-- حاوية الأقسام الرئيسية على اليمين لتفادي الفراغات -->
-            <div class="sections-wrapper">
-                
-                <!-- 1. قسم التبليغات والتعميمات الرسمية -->
-                <section class="section-block" id="announcements-section">
-                    <h2>التبليغات والتعميمات الإدارية</h2>
-                    <div class="announcements-list" id="publicAnnouncementsList">
-                        <!-- التبليغات تظهر هنا تلقائياً من Firebase -->
-                    </div>
-                </section>
-
-                <!-- 2. قسم رؤية المدرسة وأهدافها (الذي تم استرجاعه بالكامل) -->
-                <section class="section-block" id="vision-section">
-                    <h2>رؤية المدرسة وأهدافها التربوية</h2>
-                    <div class="vision-card">
-                        <p>تسعى متوسطة الجوادين للبنين دائماً إلى تقديم بيئة تعليمية محفزة وداعمة للطلبة، من خلال مواكبة المناهج الحديثة، وتنمية المهارات الإبداعية، والاهتمام بالجانب الأخلاقي والتربوي جنباً إلى جنب مع التحصيل الأكاديمي المتميز لإعداد جيل يبني الوطن بكل ثقة واقتدار.</p>
-                        <ul class="objectives-list">
-                            <li>تحسين مستوى التحصيل الدراسي وتحفيز الطلبة على نيل المراتب الأولى.</li>
-                            <li>توفير قنوات تواصل إلكترونية مباشرة وسريعة بين الإدارة والطلبة وأولياء الأمور.</li>
-                            <li>توجيه طاقات الطلاب لبناء شخصيات مسؤولة ومثقفة تخدم مجتمعها.</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <!-- 3. قسم الدعم الطلابي والشكاوى (الذي تم استرجاعه بالكامل) -->
-                <section class="section-block" id="support-section">
-                    <h2>مركز الدعم الطلابي والشكاوى</h2>
-                    <div class="support-card">
-                        <p>تلتزم إدارة متوسطة الجوادين للبنين بالاستماع لآراء طلابها ومعالجة أي شكاوى أو مقترحات تساهم في تطوير وتيسير رحلتهم الأكاديمية. بإمكانك إرسال شكواك أو اقتراحك بشكل سري وسريع للإدارة مباشرة.</p>
-                        <div class="support-links">
-                            <a href="#" class="btn-support" onclick="alert('سيتم فتح نموذج تقديم الشكاوى والمقترحات قريباً بالتنسيق مع الإدارة!')">تقديم شكوى أو مقترح</a>
-                            <a href="#" class="btn-support" style="background-color: var(--color-blue);" onclick="openAuthModal()">تحديثات الطالب الشخصية</a>
-                        </div>
-                    </div>
-                </section>
-
-            </div>
-
-        </main>
-    </div>
-
-    <!-- واجهة الطالب الشخصية بعد الدخول بنجاح (تظهر وتخفي الواجهة الأساسية) -->
-    <div class="student-portal" id="studentPortal">
-        <div class="portal-card">
-            <div class="portal-header">
-                <h2>👤 حسابك الشخصي ودرجاتك</h2>
-                <button class="tab-btn" onclick="logoutStudent()" style="max-width: 120px; background-color:#fee2e2; color:#ef4444;">تسجيل خروج</button>
-            </div>
-
-            <!-- معلومات الطالب بروفايلك -->
-            <div class="student-profile" id="studentProfile">
-                <!-- مولد ديناميكياً -->
-            </div>
-
-            <!-- تنبيه الأستاذ الخاص -->
-            <div class="private-notification-box" id="studentPrivateNotification">
-                <!-- رسالة الأستاذ الخاصة -->
-            </div>
-
-            <!-- الدرجات والمواد والنتائج لكافة الأكوام والكورسات -->
-            <div class="grades-table-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                    <h3 style="font-size: 15px; font-weight: 800;">📊 كشف درجات الطالب</h3>
-                    <select id="selectTermPortal" class="form-control" style="max-width: 220px;" onchange="renderStudentGradesTable()">
-                        <option value="c1_m1">الكورس الأول - الشهر الأول</option>
-                        <option value="c1_m2">الكورس الأول - الشهر الثاني</option>
-                        <option value="mid">الكورس الأول - نصف السنة</option>
-                        <option value="c2_m1">الكورس الثاني - الشهر الأول</option>
-                        <option value="c2_m2">الكورس الثاني - الشهر الثاني</option>
-                        <option value="final">الكورس الثاني - نهاية السنة</option>
-                    </select>
-                </div>
-
-                <table class="grades-table">
-                    <thead>
-                        <tr>
-                            <th>المادة الدراسية</th>
-                            <th>الدرجة المستحقة</th>
-                        </tr>
-                    </thead>
-                    <tbody id="studentGradesTableBody">
-                        <!-- تُعرض ديناميكياً -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- النافذة المنبثقة الاختيارية (Modal) -->
-    <div class="modal-overlay" id="authModal">
-        <div class="modal-content">
-            <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
-            <div class="modal-body">
-                <div id="authContainer">
-                    <div class="auth-tabs">
-                        <button class="tab-btn active" id="tabBtnLogin" onclick="switchAuthTab('login')">تسجيل دخول الطالب</button>
-                        <button class="tab-btn" id="tabBtnRegister" onclick="switchAuthTab('register')">تسجيل طالب جديد</button>
-                    </div>
-
-                    <!-- كارت الدخول -->
-                    <div class="card-inner" id="loginCard">
-                        <h2>🔑 الدخول إلى لوحة درجاتك الشخصية</h2>
-                        <div class="form-group">
-                            <label for="studentCode">أدخل رمز الطالب السري الخاص بك</label>
-                            <input type="text" id="studentCode" class="form-control" placeholder="مثال: JWD-1234 (تحصل عليه بعد التسجيل)">
-                        </div>
-                        <button class="btn" onclick="loginStudent()">دخول المنصة</button>
-                    </div>
-
-                    <!-- كارت التسجيل الجديد (بدون خانة اسم أب الأم نهائياً) -->
-                    <div class="card-inner" id="registerCard" style="display: none;">
-                        <h2>📝 ملء استمارة الطالب الجديدة لأول مرة</h2>
-                        
-                        <div class="form-group">
-                            <label for="regFullName">اسم الطالب الرباعي واللقب *</label>
-                            <input type="text" id="regFullName" class="form-control" placeholder="أدخل اسمك الرباعي الكامل واللقب...">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="regMotherName">اسم الأم الثلاثي *</label>
-                            <input type="text" id="regMotherName" class="form-control" placeholder="أدخل اسم الأم الثلاثي الكامل...">
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group">
-                                <label for="regPhone">رقم هاتف ولي الأمر الفعال *</label>
-                                <input type="tel" id="regPhone" class="form-control" placeholder="أدخل رقم الهاتف...">
-                            </div>
-                            <div class="form-group">
-                                <label for="regNationalId">رقم البطاقة الموحدة / الهوية *</label>
-                                <input type="text" id="regNationalId" class="form-control" placeholder="أدخل الرقم الوطني الموحد...">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group">
-                                <label for="regGrade">الصف الدراسي *</label>
-                                <select id="regGrade" class="form-control" onchange="updateRegisterSections()">
-                                    <option value="1">الاول متوسط</option>
-                                    <option value="2">الثاني متوسط</option>
-                                    <option value="3">الثالث متوسط</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="regSection">الشعبة *</label>
-                                <select id="regSection" class="form-control">
-                                    <!-- سيتم تعبئتها ديناميكياً -->
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>تحميل صورتك الشخصية (اختياري)</label>
-                            <div class="file-upload-wrapper">
-                                <span class="file-upload-btn" id="photoFileName">اضغط هنا لالتقاط أو اختيار صورتك الشخصية...</span>
-                                <input type="file" id="regPhotoFile" accept="image/*" onchange="handleStudentPhoto(this)">
-                            </div>
-                        </div>
-
-                        <button class="btn" style="background-color: var(--color-green);" onclick="registerStudent()">تسجيل وتوليد كود الدخول</button>
-                    </div>
-
-                    <!-- صندوق النجاح والحصول على الكود -->
-                    <div class="success-register-box" id="successRegisterBox">
-                        <h3>🎉 تم تسجيلك بنجاح في مدرسة الجوادين!</h3>
-                        <p>يرجى تصوير الشاشة وحفظ هذا الكود السري للدخول مجدداً ومعرفة درجاتك دائماً:</p>
-                        <div class="student-code" id="generatedStudentCode"></div>
-                        <p style="font-size:12.5px; font-weight:700; color:#b45309;">(ملاحظة: تفعيل الحساب والدرجات يتم فوراً عبر الأستاذ)</p>
-                        <button class="btn" onclick="goToLoginAfterRegister()" style="margin-top: 15px; max-width: 180px;">الذهاب لتسجيل الدخول</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- جلب Firebase الأساسي -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
-    <script>
-        const firebaseConfig = {
-            databaseURL: "https://jawadin-school1-default-rtdb.firebaseio.com"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        let studentPhotoBase64 = "";
-        let currentStudentData = null;
-
-        const sectionsConfig = {
-            1: ['أ', 'ب', 'ج', 'د', 'و'],
-            2: ['أ', 'ب', 'ج', 'د'],
-            3: ['أ', 'ب', 'ج', 'د', 'هـ']
-        };
-
-        const subjectsConfig = {
-            1: ['العربية', 'الاسلامية', 'الانكليزية', 'الرياضيات', 'الاجتماعيات', 'الاحياء', 'الكيمياء', 'الفيزياء', 'الاخلاقية', 'الفنية'],
-            2: ['العربية', 'الاسلامية', 'الانكليزية', 'الرياضيات', 'الاجتماعيات', 'الاحياء', 'الكيمياء', 'الفيزياء', 'الاخلاقية', 'الفنية'],
-            3: ['العربية', 'الاسلامية', 'الادب', 'الاجتماعيات', 'الرياضيات', 'الانكليزية', 'الاحياء', 'الفيزياء', 'الكيمياء']
-        };
-
-        window.onload = function() {
-            loadPublicAnnouncements();
-            updateRegisterSections();
-
-            window.onclick = function(event) {
-                const modal = document.getElementById('authModal');
-                if (event.target === modal) {
-                    closeAuthModal();
-                }
-            }
-        };
-
-        function openAuthModal() {
-            document.getElementById('authModal').style.display = 'flex';
         }
 
-        function closeAuthModal() {
-            document.getElementById('authModal').style.display = 'none';
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
         }
 
-        function updateRegisterSections() {
-            const grade = document.getElementById('regGrade').value;
-            const selectSec = document.getElementById('regSection');
-            selectSec.innerHTML = '';
-            sectionsConfig[grade].forEach(sec => {
-                selectSec.innerHTML += `<option value="${sec}">الشعبة (${sec})</option>`;
-            });
-        }
-
-        function switchAuthTab(tab) {
-            document.getElementById('tabBtnLogin').classList.remove('active');
-            document.getElementById('tabBtnRegister').classList.remove('active');
-            
-            if (tab === 'login') {
-                document.getElementById('tabBtnLogin').classList.add('active');
-                document.getElementById('loginCard').style.display = 'block';
-                document.getElementById('registerCard').style.display = 'none';
-                document.getElementById('successRegisterBox').style.display = 'none';
-            } else {
-                document.getElementById('tabBtnRegister').classList.add('active');
-                document.getElementById('loginCard').style.display = 'none';
-                document.getElementById('registerCard').style.display = 'block';
-                document.getElementById('successRegisterBox').style.display = 'none';
-            }
-        }
-
-        function loadPublicAnnouncements() {
-            database.ref('notifications').on('value', (snapshot) => {
-                const data = snapshot.val();
-                const container = document.getElementById('publicAnnouncementsList');
-
-                if (data) {
-                    let htmlContent = '';
-                    const list = [];
-                    for (let id in data) {
-                        list.push({ id, ...data[id] });
-                    }
-                    list.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                    list.forEach(item => {
-                        let imgTag = item.image ? `<img src="${item.image}" alt="صورة التبليغ">` : '';
-                        htmlContent += `
-                            <div class="announcement-card">
-                                <span class="date">📅 نشر في تاريخ: ${item.date}</span>
-                                <p>${item.text}</p>
-                                ${imgTag}
-                            </div>
-                        `;
-                    });
-                    container.innerHTML = htmlContent;
-                } else {
-                    container.innerHTML = '<p style="text-align:center; color:var(--color-text-muted); font-weight:700; padding: 20px;">لا توجد أي تعميمات إدارية منشورة حالياً.</p>';
-                }
-            });
-        }
-
-        function handleStudentPhoto(input) {
-            const file = input.files[0];
-            if (file) {
-                document.getElementById('photoFileName').innerText = "تم اختيار: " + file.name;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    studentPhotoBase64 = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function registerStudent() {
-            const fullName = document.getElementById('regFullName').value.trim();
-            const motherName = document.getElementById('regMotherName').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
-            const nationalId = document.getElementById('regNationalId').value.trim();
-            const grade = document.getElementById('regGrade').value;
-            const section = document.getElementById('regSection').value;
-
-            if (!fullName || !motherName || !phone || !nationalId) {
-                alert('الرجاء ملء كل الحقول التي تحتوي علامة (*) لتأكيد التسجيل!');
-                return;
-            }
-
-            const randomCode = "JWD-" + Math.floor(1000 + Math.random() * 9000);
-
-            const studentRef = database.ref('students').push();
-            studentRef.set({
-                fullName: fullName,
-                motherName: motherName,
-                phone: phone,
-                nationalId: nationalId,
-                grade: grade,
-                section: section,
-                photo: studentPhotoBase64 || "",
-                studentCode: randomCode,
-                private_notification: "",
-                grades: {}
-            }).then(() => {
-                document.getElementById('registerCard').style.display = 'none';
-                document.getElementById('successRegisterBox').style.display = 'block';
-                document.getElementById('generatedStudentCode').innerText = randomCode;
-
-                document.getElementById('regFullName').value = '';
-                document.getElementById('regMotherName').value = '';
-                document.getElementById('regPhone').value = '';
-                document.getElementById('regNationalId').value = '';
-                document.getElementById('photoFileName').innerText = "اضغط هنا لالتقاط أو اختيار صورتك الشخصية...";
-                studentPhotoBase64 = "";
-            }).catch(err => {
-                alert('عذراً، حدثت مشكلة أثناء الاتصال بقاعدة البيانات. الرجاء إعادة المحاولة مجدداً.');
-            });
-        }
-
-        function goToLoginAfterRegister() {
-            switchAuthTab('login');
-        }
-
-        function loginStudent() {
-            const enteredCode = document.getElementById('studentCode').value.trim();
-            if (!enteredCode) {
-                alert('الرجاء كتابة كود الطالب السري للدخول!');
-                return;
-            }
-
-            database.ref('students').once('value', (snapshot) => {
-                const students = snapshot.val();
-                let found = false;
-
-                if (students) {
-                    for (let id in students) {
-                        if (students[id].studentCode === enteredCode) {
-                            found = true;
-                            currentStudentData = { id, ...students[id] };
-                            closeAuthModal();
-                            showStudentPortal();
-                            break;
-                        }
-                    }
-                }
-
-                if (!found) {
-                    alert('هذا الكود السري غير مسجل لدينا. يرجى التحقق من الكود أو عمل تسجيل جديد.');
-                }
-            });
-        }
-
-        function showStudentPortal() {
-            document.getElementById('mainWebsiteSection').style.display = 'none';
-            document.getElementById('studentPortal').style.display = 'block';
-
-            const defaultAvatar = 'https://assets.onecompiler.app/42t37w25r/42t37vq8z/2.jpg';
-            const gradeText = currentStudentData.grade == '1' ? 'الاول متوسط' : currentStudentData.grade == '2' ? 'الثاني متوسط' : 'الثالث متوسط';
-            
-            document.getElementById('studentProfile').innerHTML = `
-                <img src="${currentStudentData.photo || defaultAvatar}" onerror="this.src='${defaultAvatar}'" class="student-avatar" alt="بروفايل">
-                <div class="student-info">
-                    <h3>${currentStudentData.fullName}</h3>
-                    <p>الصف: ${gradeText} | شعبة: ${currentStudentData.section}</p>
-                    <p style="margin-top:4px; font-weight:700;">رمز الدخول السري: <span style="color:var(--color-blue);">${currentStudentData.studentCode}</span></p>
-                </div>
-            `;
-
-            database.ref(`students/${currentStudentData.id}`).on('value', (snapshot) => {
-                currentStudentData = { id: currentStudentData.id, ...snapshot.val() };
-                
-                const pNotif = currentStudentData.private_notification;
-                const notifBox = document.getElementById('studentPrivateNotification');
-                if (pNotif && pNotif.trim() !== "") {
-                    notifBox.innerHTML = `<strong>⚠️ تنبيه وتوجيه خاص من الأستاذ:</strong><br>${pNotif}`;
-                    notifBox.style.display = 'block';
-                } else {
-                    notifBox.style.display = 'none';
-                }
-
-                renderStudentGradesTable();
-            });
-        }
-
-        function renderStudentGradesTable() {
-            if (!currentStudentData) return;
-
-            const term = document.getElementById('selectTermPortal').value;
-            const container = document.getElementById('studentGradesTableBody');
-            container.innerHTML = '';
-
-            const subjects = subjectsConfig[parseInt(currentStudentData.grade)];
-            const termGrades = (currentStudentData.grades && currentStudentData.grades[term]) ? currentStudentData.grades[term] : {};
-
-            subjects.forEach(sub => {
-                let gradeVal = termGrades[sub];
-                let badgeClass = 'announced';
-                
-                if (gradeVal === undefined || gradeVal === '') {
-                    gradeVal = 'لم تُدخل بعد';
-                    badgeClass = 'not-announced';
-                } else if (gradeVal === 'لم تعلن بعد') {
-                    badgeClass = 'not-announced';
-                }
-
-                container.innerHTML += `
-                    <tr>
-                        <td style="font-weight:700;">${sub}</td>
-                        <td><span class="grade-badge ${badgeClass}">${gradeVal}</span></td>
-                    </tr>
-                `;
-            });
-        }
-
-        function logoutStudent() {
-            currentStudentData = null;
-            document.getElementById('studentPortal').style.display = 'none';
-            document.getElementById('mainWebsiteSection').style.display = 'block';
-            document.getElementById('studentCode').value = '';
-            switchAuthTab('login');
-        }
-    </script>
-</body>
-</html>
+        nav ul li a {
+            text-decoration: none;
