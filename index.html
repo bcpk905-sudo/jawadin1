@@ -348,7 +348,6 @@
             color: var(--color-blue);
         }
 
-        /* تنسيق زر تسجيل الخروج الجديد */
         .logout-btn {
             background: none;
             border: 1px solid #ef4444;
@@ -360,7 +359,7 @@
             font-size: 14px;
             transition: all 0.3s ease;
             text-decoration: none;
-            display: none; /* مخفي افتراضياً ويظهر فقط عند تسجيل الدخول */
+            display: none;
         }
 
         .logout-btn:hover {
@@ -1087,4 +1086,278 @@
                                 <div class="vision-card-number">2</div>
                                 <div class="vision-card-title">Values and Ethics</div>
                             </div>
-                            <p class="vision-card-text">Instilling noble educational values and ethics in our
+                            <p class="vision-card-text">Instilling noble educational values and ethics in our students to make them real builders of Iraqi society.</p>
+                        </div>
+                        <div class="vision-card">
+                            <div class="vision-card-header">
+                                <div class="vision-card-number">3</div>
+                                <div class="vision-card-title">Keeping Pace with Tech</div>
+                            </div>
+                            <p class="vision-card-text">Developing digital services and training students on modern platforms to follow up on their academic levels smoothly.</p>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // تغيير خيارات الشعبة حسب الصف المختار
+        function updateDivisionOptions() {
+            const gradeSelect = document.getElementById('studentGrade');
+            const divisionGroup = document.getElementById('divisionGroup');
+            const divisionSelect = document.getElementById('studentDivision');
+            
+            const grade = gradeSelect.value;
+            divisionSelect.innerHTML = ""; // تصفير الشعب القديمة
+            
+            let divisions = [];
+            
+            if (grade === "الأول متوسط" || grade === "الثاني متوسط") {
+                divisions = ["أ", "ب", "ج", "د", "هـ", "و"];
+            } else if (grade === "الثالث متوسط") {
+                divisions = ["أ", "ب", "ج", "د", "هـ"];
+            }
+            
+            if (divisions.length > 0) {
+                divisions.forEach(div => {
+                    const opt = document.createElement('option');
+                    opt.value = div;
+                    opt.innerText = div;
+                    divisionSelect.appendChild(opt);
+                });
+                divisionGroup.style.display = "block";
+            } else {
+                divisionGroup.style.display = "none";
+            }
+        }
+
+        // اختيار اللغة وتطبيق واجهات الاتجاهات
+        function selectLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('langOverlay').classList.add('hidden');
+            
+            if (lang === 'en') {
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.documentElement.setAttribute('lang', 'en');
+                document.getElementById('linkHome').innerText = "Home";
+                document.getElementById('linkSystem').innerText = "System";
+                document.getElementById('linkDigital').innerText = "Digital Services";
+                document.getElementById('linkNotifications').innerText = "Announcements";
+                document.getElementById('linkVision').innerText = "Our Vision";
+                document.getElementById('btnAuthHeader').innerText = "Login / Register";
+                document.getElementById('heroTitle').innerText = "Al-Jawadain Intermediate School";
+                document.getElementById('heroDesc').innerText = "A distinguished educational monument aiming to build future generations capable of excellence.";
+                document.getElementById('btnHeroSystem').innerText = "Our System & Facilities";
+                document.getElementById('btnHeroResults').innerText = "My Grades & Notices";
+                document.getElementById('sideCardTitle').innerText = "School Logo";
+            } else {
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.documentElement.setAttribute('lang', 'ar');
+            }
+            
+            document.getElementById('mainArticle').innerHTML = content[lang].article;
+            checkSavedSession();
+        }
+
+        function openAuthModal() {
+            document.getElementById('authModal').classList.add('active');
+            switchAuthMode('register');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.remove('active');
+        }
+
+        function switchAuthMode(mode) {
+            if (mode === 'login') {
+                document.getElementById('registerFormSection').style.display = "none";
+                document.getElementById('loginFormSection').style.display = "block";
+                document.getElementById('successDisplaySection').style.display = "none";
+            } else if (mode === 'register') {
+                document.getElementById('registerFormSection').style.display = "block";
+                document.getElementById('loginFormSection').style.display = "none";
+                document.getElementById('successDisplaySection').style.display = "none";
+            }
+        }
+
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        // تحويل صورة الطالب المرفوعة إلى Base64 للتخزين المباشر في Firebase
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // تسجيل وإنشاء حساب جديد للطالب
+        async function handleRegisterSubmit(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('studentName').value.trim();
+            const grade = document.getElementById('studentGrade').value;
+            const division = document.getElementById('studentDivision').value;
+            const motherName = document.getElementById('motherName').value.trim();
+            const phone = document.getElementById('parentPhone').value.trim();
+            const nationalId = document.getElementById('nationalId').value.trim();
+            const photoFile = document.getElementById('studentPhoto').files[0];
+
+            if (!name || !grade || !division || !motherName || !phone || !nationalId || !photoFile) {
+                alert("الرجاء ملء كافة الحقول لإتمام التسجيل!");
+                return;
+            }
+
+            try {
+                const photoBase64 = await getBase64(photoFile);
+                const studentId = database.ref().child('students').push().key;
+                const finalSecretCode = "JW-" + studentId.substring(1, 7).toUpperCase();
+
+                const studentData = {
+                    id: finalSecretCode,
+                    name: name,
+                    grade: grade,
+                    division: division,
+                    motherName: motherName,
+                    phone: phone,
+                    nationalId: nationalId,
+                    photo: photoBase64,
+                    grades: {
+                        chemistry: "لم ترصد",
+                        physics: "لم ترصد"
+                    }
+                };
+
+                await database.ref('students/' + finalSecretCode).set(studentData);
+
+                document.getElementById('generatedCodeBox').innerText = finalSecretCode;
+                document.getElementById('registerFormSection').style.display = "none";
+                document.getElementById('successDisplaySection').style.display = "block";
+
+                localStorage.setItem('studentSession', JSON.stringify(studentData));
+
+            } catch (error) {
+                console.error("حدث خطأ أثناء التسجيل: ", error);
+                alert("فشل في الاتصال بقاعدة البيانات. يرجى مراجعة إعدادات Firebase.");
+            }
+        }
+
+        function finishRegistration() {
+            closeAuthModal();
+            location.reload(); 
+        }
+
+        // تسجيل الدخول باستخدام الاسم الرمزي المولد
+        async function handleLoginSubmit(event) {
+            event.preventDefault();
+
+            const loginName = document.getElementById('loginName').value.trim();
+            const loginPassword = document.getElementById('loginPassword').value.trim();
+
+            if (!loginName || !loginPassword) {
+                alert("الرجاء إدخال اسمك ورمزك السري للدخول!");
+                return;
+            }
+
+            try {
+                const snapshot = await database.ref('students/' + loginPassword).once('value');
+                
+                if (snapshot.exists()) {
+                    const studentData = snapshot.val();
+                    
+                    if (studentData.name.toLowerCase() === loginName.toLowerCase()) {
+                        alert("🎉 تم تسجيل الدخول بنجاح! مرحباً بك: " + studentData.name);
+                        localStorage.setItem('studentSession', JSON.stringify(studentData));
+                        closeAuthModal();
+                        applyLoggedInState(studentData);
+                    } else {
+                        alert("❌ الاسم المكتوب لا يطابق صاحب هذا الرمز السري!");
+                    }
+                } else {
+                    alert("❌ الرمز السري غير صحيح أو الحساب غير موجود!");
+                }
+
+            } catch (error) {
+                console.error("حدث خطأ أثناء تسجيل الدخول: ", error);
+                alert("عذراً، فشل التحقق من البيانات.");
+            }
+        }
+
+        // تطبيق تغييرات الواجهة والاتصال بمصادر التبليغ عند الدخول
+        function applyLoggedInState(student) {
+            loggedInStudent = student;
+
+            const authBtn = document.getElementById('btnAuthHeader');
+            authBtn.innerText = "حسابي: " + student.name.split(' ')[0];
+            authBtn.onclick = null; 
+            
+            document.getElementById('btnLogout').style.display = "inline-block";
+
+            const resultBtn = document.getElementById('btnHeroResults');
+            resultBtn.innerText = "عرض درجاتي الفورية";
+            resultBtn.onclick = function() {
+                alert(`📚 درجات الطالب: ${student.name}\n\n🧪 الكيمياء: ${student.grades?.chemistry || 'لم ترصد'}\n⚡ الفيزياء: ${student.grades?.physics || 'لم ترصد'}`);
+            };
+
+            loadStudentPrivateNotifications(student.id);
+        }
+
+        // تحميل التبليغات الخاصة بالطالب ديناميكياً من Firebase
+        function loadStudentPrivateNotifications(studentId) {
+            const notifContainer = document.getElementById('notificationsContainer');
+            notifContainer.innerHTML = "جاري جلب تبليغاتك الخاصة...";
+
+            database.ref('notifications/' + studentId).on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    notifContainer.innerHTML = ""; 
+                    
+                    snapshot.forEach((childSnapshot) => {
+                        const notif = childSnapshot.val();
+                        const div = document.createElement('div');
+                        div.className = "notification-item";
+                        
+                        div.innerHTML = `
+                            <span class="notification-date">${notif.date || 'اليوم'}</span>
+                            <div class="notification-text">${notif.text}</div>
+                        `;
+
+                        if (notif.img) {
+                            const img = document.createElement('img');
+                            img.className = "notification-img";
+                            img.src = notif.img;
+                            div.appendChild(img);
+                        }
+
+                        notifContainer.appendChild(div);
+                    });
+                } else {
+                    notifContainer.innerHTML = "🎉 لا توجد لديك أي تبليغات أو إنذارات خاصة في الوقت الحالي.";
+                }
+            });
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('studentSession');
+            alert("تم تسجيل الخروج.");
+            location.reload();
+        }
+
+        function checkSavedSession() {
+            const savedSession = localStorage.getItem('studentSession');
+            if (savedSession) {
+                const studentData = JSON.parse(savedSession);
+                database.ref('students/' + studentData.id).once('value', (snapshot) => {
+                    if (snapshot.exists()) {
+                        applyLoggedInState(snapshot.val());
+                    } else {
+                        applyLoggedInState(studentData);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
