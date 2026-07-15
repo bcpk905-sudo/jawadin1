@@ -1384,23 +1384,28 @@
                 let gradeText = student.grade === '1' ? 'الأول متوسط' : student.grade === '2' ? 'الثاني متوسط' : 'الثالث متوسط';
                 
                 // تحديد قائمة المواد الثابتة بناءً على مرحلة الطالب المسجلة لمنع اختفائها أبداً
-                let currentSubjects = [];
-                if (student.grade === '1' || student.grade === '2') {
-                    currentSubjects = ['عربي', 'اسلاميه', 'انكليزي', 'رياضيات', 'اجتماعيات', 'احياء', 'كيمياء', 'فيزياء', 'اخلاقية', 'فنية'];
-                } else if (student.grade === '3') {
-                    currentSubjects = ['عربي', 'اسلامية', 'ادب', 'اجتماعيات', 'رياضيات', 'انكليزي', 'احياء', 'فيزياء', 'كيمياء'];
-                }
+             // ابحث عن هذا الجزء في كودك وغيره ليصبح كالتالي:
 
-                // بناء التنبيه المخصص السريع (إن وجد في الأعلى)
-                let alertPvtHtml = '';
-                if(student.private_notifications && student.private_notifications.trim() !== "") {
-                    alertPvtHtml = `
-                        <div class="badge-alert-pvt">
-                            <strong>📢 إشعار هام:</strong> يرجى مراجعة التبليغات المخصصة لك في أسفل اللوحة.
-                        </div>
-                    `;
-                }
+let gradesHtml = `... (كود عرض الكورس الأول) ...`;
 
+// هذا هو الشرط الجديد
+if (student.grade !== '3') {
+    gradesHtml += `
+        <div class="grade-section-title">📊 نتائج امتحانات الكورس الثاني ونهاية السنة</div>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+            ${formatPeriod('كورس2_شهر1', 'الشهر الأول')}
+            ${formatPeriod('كورس2_شهر2', 'الشهر الثاني')}
+            ${formatPeriod('n_year', 'امتحان نهاية السنة')}
+        </div>
+    `;
+} else {
+    // هذا الجزء سيظهر لطلاب الثالث فقط بدلاً من الجداول
+    gradesHtml += `
+        <div style="text-align: center; padding: 20px; color: #b91c1c; border: 1px dashed #ef4444; border-radius: 8px; margin-top: 20px;">
+            نتائج امتحانات نهاية السنة لطلبة الثالث متوسط تُعلن عبر القناة الرسمية للمدرسة.
+        </div>
+    `;
+}
                 // دالة بناء جداول الدرجات التفاعلية
                 const formatPeriod = (pKey, title) => {
                     let tableRows = '';
