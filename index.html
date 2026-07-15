@@ -38,7 +38,7 @@
             margin: 0 auto;
         }
 
-        /* رأس الصفحة */
+        /* رأس الصفحة والملاحة الإضافية */
         header {
             background-color: var(--bg-primary);
             border-radius: 16px;
@@ -47,6 +47,42 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             margin-bottom: 25px;
             border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        /* زر الدخول المضاف بدلاً من قناة التليغرام */
+        .nav-action-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: var(--color-blue);
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-action-btn:hover {
+            background-color: var(--color-blue-hover);
+        }
+
+        @media (max-width: 576px) {
+            header {
+                padding-top: 60px;
+            }
+            .nav-action-btn {
+                top: 15px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 40px);
+                text-align: center;
+            }
         }
 
         header img {
@@ -115,11 +151,76 @@
             border: 1px solid var(--border-color);
         }
 
+        /* النافذة المنبثقة للتسجيل والدخول */
+        .modal-overlay {
+            display: none; /* مخفي افتراضياً */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6); /* خلفية معتمة */
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: var(--bg-primary);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-color);
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalFadeIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #f1f5f9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--color-text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .modal-close-btn:hover {
+            background-color: #e2e8f0;
+            color: var(--color-text-dark);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
         /* التبويبات للتبديل بين الدخول والتسجيل */
         .auth-tabs {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            margin-top: 15px;
         }
 
         .tab-btn {
@@ -145,10 +246,7 @@
         .card {
             background-color: var(--bg-primary);
             border-radius: 16px;
-            padding: 30px 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
-            margin-bottom: 25px;
+            padding: 10px 5px;
         }
 
         .card h2 {
@@ -215,7 +313,7 @@
             background-color: var(--color-blue-hover);
         }
 
-        /* منطقة رفع الصورة وتأكيد الرفع */
+        /* منطقة رفع الصورة */
         .file-upload-wrapper {
             position: relative;
         }
@@ -297,7 +395,7 @@
             margin-bottom: 25px;
             font-size: 14.5px;
             color: #856404;
-            display: none; /* تظهر فقط إذا أرسل الأستاذ تنبيهاً للطالب */
+            display: none;
         }
 
         /* كارت وعرض الدرجات */
@@ -383,12 +481,15 @@
         
         <!-- رأس الصفحة العام -->
         <header>
+            <!-- زر تسجيل الدخول الجديد المستبدل -->
+            <button class="nav-action-btn" onclick="openAuthModal()">تسجيل الدخول / إنشاء حساب</button>
+
             <img src="2.jpg" onerror="this.onerror=null; this.src='https://assets.onecompiler.app/42t37w25r/42t37vq8z/2.jpg';" alt="شعار مدرسة الجوادين">
             <h1>متوسطة الجوادين للبنين</h1>
             <p>المنصة الرسمية المباشرة للتواصل وإعلان النتائج والتبليغات الإدارية</p>
         </header>
 
-        <!-- قسم التبليغات العامة المتجدد دائماً من لوحة الأستاذ -->
+        <!-- قسم التبليغات العامة (يظهر بالواجهة مباشرة) -->
         <div class="announcements-section" id="announcementsSec" style="display: none;">
             <h2>📢 تبليغات وإعلانات إدارة المدرسة</h2>
             <div id="publicAnnouncementsList">
@@ -396,96 +497,97 @@
             </div>
         </div>
 
-        <!-- أزرار التبويب لتسجيل الدخول أو التسجيل الجديد -->
-        <div id="authContainer">
-            <div class="auth-tabs">
-                <button class="tab-btn active" onclick="switchAuthTab('login')">تسجيل دخول الطالب</button>
-                <button class="tab-btn" onclick="switchAuthTab('register')">تسجيل طالب جديد</button>
-            </div>
+        <!-- النافذة المنبثقة الاختيارية (Modal) -->
+        <div class="modal-overlay" id="authModal">
+            <div class="modal-content">
+                <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
+                <div class="modal-body">
+                    <div id="authContainer">
+                        <div class="auth-tabs">
+                            <button class="tab-btn active" id="tabBtnLogin" onclick="switchAuthTab('login')">تسجيل دخول الطالب</button>
+                            <button class="tab-btn" id="tabBtnRegister" onclick="switchAuthTab('register')">تسجيل طالب جديد</button>
+                        </div>
 
-            <!-- كارت تسجيل الدخول بالرمز الشخصي -->
-            <div class="card" id="loginCard">
-                <h2>🔑 الدخول إلى لوحة درجاتك الشخصية</h2>
-                <div class="form-group">
-                    <label for="studentCode">أدخل رمز الطالب السري الخاص بك</label>
-                    <input type="text" id="studentCode" class="form-control" placeholder="مثال: JWD-1234 (تحصل عليه بعد التسجيل)">
+                        <!-- كارت تسجيل الدخول بالرمز الشخصي -->
+                        <div class="card" id="loginCard">
+                            <h2>🔑 الدخول إلى لوحة درجاتك الشخصية</h2>
+                            <div class="form-group">
+                                <label for="studentCode">أدخل رمز الطالب السري الخاص بك</label>
+                                <input type="text" id="studentCode" class="form-control" placeholder="مثال: JWD-1234 (تحصل عليه بعد التسجيل)">
+                            </div>
+                            <button class="btn" onclick="loginStudent()">دخول المنصة</button>
+                        </div>
+
+                        <!-- كارت التسجيل الجديد لأول مرة (بدون خانة اسم أب الأم) -->
+                        <div class="card" id="registerCard" style="display: none;">
+                            <h2>📝 ملء استمارة الطالب الجديدة لأول مرة</h2>
+                            
+                            <div class="form-group">
+                                <label for="regFullName">اسم الطالب الرباعي واللقب *</label>
+                                <input type="text" id="regFullName" class="form-control" placeholder="أدخل اسمك الكامل...">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="regMotherName">اسم الأم الثلاثي *</label>
+                                <input type="text" id="regMotherName" class="form-control" placeholder="أدخل اسم الأم الثلاثي...">
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="regPhone">رقم هاتف ولي الأمر الفعال *</label>
+                                    <input type="tel" id="regPhone" class="form-control" placeholder="أدخل رقم الهاتف...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="regNationalId">رقم البطاقة الموحدة / الهوية *</label>
+                                    <input type="text" id="regNationalId" class="form-control" placeholder="أدخل الرقم الوطني...">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="regGrade">الصف الدراسي *</label>
+                                    <select id="regGrade" class="form-control" onchange="updateRegisterSections()">
+                                        <option value="1">الاول متوسط</option>
+                                        <option value="2">الثاني متوسط</option>
+                                        <option value="3">الثالث متوسط</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="regSection">الشعبة *</label>
+                                    <select id="regSection" class="form-control">
+                                        <!-- سيتم تعبئتها ديناميكياً -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>تحميل صورتك الشخصية (من الهاتف مباشرة - اختياري)</label>
+                                <div class="file-upload-wrapper">
+                                    <span class="file-upload-btn" id="photoFileName">اضغط هنا لالتقاط أو اختيار صورتك الشخصية...</span>
+                                    <input type="file" id="regPhotoFile" accept="image/*" onchange="handleStudentPhoto(this)">
+                                </div>
+                            </div>
+
+                            <button class="btn" style="background-color: var(--color-green);" onclick="registerStudent()">تسجيل وتوليد كود الدخول الخاص بي</button>
+                        </div>
+
+                        <!-- صندوق النجاح بعد التسجيل مباشرة وإظهار الكود -->
+                        <div class="success-register-box" id="successRegisterBox">
+                            <h3>🎉 تم تسجيلك بنجاح في مدرسة الجوادين!</h3>
+                            <p>يرجى حفظ الكود السري المولد أدناه جيداً وتصوير الشاشة. ستحتاجه في كل مرة لتسجيل الدخول ومعرفة درجاتك:</p>
+                            <div class="student-code" id="generatedStudentCode"></div>
+                            <p style="font-size:13px; font-weight:700;">(ملاحظة: تفعيل حسابك ورفع درجاتك يتم فوراً من قبل أستاذ المادة)</p>
+                            <button class="btn" onclick="goToLoginAfterRegister()" style="margin-top: 20px; max-width: 200px;">الذهاب لتسجيل الدخول</button>
+                        </div>
+                    </div>
                 </div>
-                <button class="btn" onclick="loginStudent()">دخول المنصة</button>
-            </div>
-
-            <!-- كارت التسجيل الجديد لأول مرة -->
-            <div class="card" id="registerCard" style="display: none;">
-                <h2>📝 ملء استمارة الطالب الجديدة لأول مرة</h2>
-                
-                <div class="form-group">
-                    <label for="regFullName">اسم الطالب الرباعي واللقب *</label>
-                    <input type="text" id="regFullName" class="form-control" placeholder="أدخل اسمك الكامل...">
-                </div>
-
-                <div class="row">
-                    <div class="form-group">
-                        <label for="regMotherName">اسم الأم الثلاثي *</label>
-                        <input type="text" id="regMotherName" class="form-control" placeholder="أدخل اسم الأم...">
-                    </div>
-                    <div class="form-group">
-                        <label for="regMotherFather">اسم أب الأم *</label>
-                        <input type="text" id="regMotherFather" class="form-control" placeholder="أدخل اسم جدك لأمك...">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group">
-                        <label for="regPhone">رقم هاتف ولي الأمر الفعال *</label>
-                        <input type="tel" id="regPhone" class="form-control" placeholder="أدخل رقم الهاتف...">
-                    </div>
-                    <div class="form-group">
-                        <label for="regNationalId">رقم البطاقة الموحدة / الهوية *</label>
-                        <input type="text" id="regNationalId" class="form-control" placeholder="أدخل الرقم الوطني...">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group">
-                        <label for="regGrade">الصف الدراسي *</label>
-                        <select id="regGrade" class="form-control" onchange="updateRegisterSections()">
-                            <option value="1">الاول متوسط</option>
-                            <option value="2">الثاني متوسط</option>
-                            <option value="3">الثالث متوسط</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="regSection">الشعبة *</label>
-                        <select id="regSection" class="form-control">
-                            <!-- سيتم تعبئتها ديناميكياً -->
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>تحميل صورتك الشخصية (من الهاتف مباشرة - اختياري)</label>
-                    <div class="file-upload-wrapper">
-                        <span class="file-upload-btn" id="photoFileName">اضغط هنا لالتقاط أو اختيار صورتك الشخصية...</span>
-                        <input type="file" id="regPhotoFile" accept="image/*" onchange="handleStudentPhoto(this)">
-                    </div>
-                </div>
-
-                <button class="btn" style="background-color: var(--color-green);" onclick="registerStudent()">تسجيل وتوليد كود الدخول الخاص بي</button>
-            </div>
-
-            <!-- صندوق النجاح بعد التسجيل مباشرة وإظهار الكود -->
-            <div class="success-register-box" id="successRegisterBox">
-                <h3>🎉 تم تسجيلك بنجاح في مدرسة الجوادين!</h3>
-                <p>يرجى حفظ الكود السري المولد أدناه جيداً وتصوير الشاشة. ستحتاجه في كل مرة لتسجيل الدخول ومعرفة درجاتك:</p>
-                <div class="student-code" id="generatedStudentCode"></div>
-                <p style="font-size:13px; font-weight:700;">(ملاحظة: تفعيل حسابك ورفع درجاتك يتم فوراً من قبل أستاذ المادة)</p>
-                <button class="btn" onclick="goToLoginAfterRegister()" style="margin-top: 20px; max-width: 200px;">الذهاب لتسجيل الدخول</button>
             </div>
         </div>
 
         <!-- واجهة الطالب الشخصية بعد الدخول بنجاح -->
         <div class="student-portal" id="studentPortal">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div class="card" style="padding: 20px 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
                     <h2>👤 حسابك الشخصي ودرجاتك</h2>
                     <button class="tab-btn" onclick="logoutStudent()" style="max-width: 120px; background-color:#fee2e2; color:#ef4444;">تسجيل خروج</button>
                 </div>
@@ -557,13 +659,28 @@
             3: ['العربية', 'الاسلامية', 'الادب', 'الاجتماعيات', 'الرياضيات', 'الانكليزية', 'الاحياء', 'الفيزياء', 'الكيمياء']
         };
 
-        // تشغيل التحميل عند فتح الصفحة
         window.onload = function() {
             loadPublicAnnouncements();
             updateRegisterSections();
+
+            // إغلاق النافذة المنبثقة عند الضغط خارجها بالخطأ
+            window.onclick = function(event) {
+                const modal = document.getElementById('authModal');
+                if (event.target === modal) {
+                    closeAuthModal();
+                }
+            }
         };
 
-        // تحديث خيارات الشعب حسب الصف المختار أثناء التسجيل
+        // دوال التحكم بالنافذة المنبثقة
+        function openAuthModal() {
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
         function updateRegisterSections() {
             const grade = document.getElementById('regGrade').value;
             const selectSec = document.getElementById('regSection');
@@ -573,23 +690,23 @@
             });
         }
 
-        // التبديل بين التبويبات
         function switchAuthTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tabBtnLogin').classList.remove('active');
+            document.getElementById('tabBtnRegister').classList.remove('active');
+            
             if (tab === 'login') {
-                document.querySelector('[onclick="switchAuthTab(\'login\')"]').classList.add('active');
+                document.getElementById('tabBtnLogin').classList.add('active');
                 document.getElementById('loginCard').style.display = 'block';
                 document.getElementById('registerCard').style.display = 'none';
                 document.getElementById('successRegisterBox').style.display = 'none';
             } else {
-                document.querySelector('[onclick="switchAuthTab(\'register\')"]').classList.add('active');
+                document.getElementById('tabBtnRegister').classList.add('active');
                 document.getElementById('loginCard').style.display = 'none';
                 document.getElementById('registerCard').style.display = 'block';
                 document.getElementById('successRegisterBox').style.display = 'none';
             }
         }
 
-        /* ---------------- تحميل التبليغات العامة ---------------- */
         function loadPublicAnnouncements() {
             database.ref('notifications').on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -622,14 +739,13 @@
             });
         }
 
-        /* ---------------- تسجيل طالب جديد ---------------- */
         function handleStudentPhoto(input) {
             const file = input.files[0];
             if (file) {
                 document.getElementById('photoFileName').innerText = "تم اختيار: " + file.name;
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    studentPhotoBase64 = e.target.result; // تحويل الصورة المرفوعة من الهاتف إلى Base64 جاهزة للرفع
+                    studentPhotoBase64 = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -638,30 +754,27 @@
         function registerStudent() {
             const fullName = document.getElementById('regFullName').value.trim();
             const motherName = document.getElementById('regMotherName').value.trim();
-            const motherFatherName = document.getElementById('regMotherFather').value.trim();
             const phone = document.getElementById('regPhone').value.trim();
             const nationalId = document.getElementById('regNationalId').value.trim();
             const grade = document.getElementById('regGrade').value;
             const section = document.getElementById('regSection').value;
 
-            if (!fullName || !motherName || !motherFatherName || !phone || !nationalId) {
+            if (!fullName || !motherName || !phone || !nationalId) {
                 alert('الرجاء تعبئة كافة الحقول المطلوبة التي تحتوي على علامة (*) واختيار صورتك الشخصية إن أمكن لضمان التسجيل!');
                 return;
             }
 
-            // توليد كود سري عشوائي مميز للطالب
             const randomCode = "JWD-" + Math.floor(1000 + Math.random() * 9000);
 
             const studentRef = database.ref('students').push();
             studentRef.set({
                 fullName: fullName,
                 motherName: motherName,
-                motherFatherName: motherFatherName,
                 phone: phone,
                 nationalId: nationalId,
                 grade: grade,
                 section: section,
-                photo: studentPhotoBase64 || "", // صورتك من الهاتف
+                photo: studentPhotoBase64 || "",
                 studentCode: randomCode,
                 private_notification: "",
                 grades: {}
@@ -670,10 +783,8 @@
                 document.getElementById('successRegisterBox').style.display = 'block';
                 document.getElementById('generatedStudentCode').innerText = randomCode;
 
-                // تصفير المدخلات
                 document.getElementById('regFullName').value = '';
                 document.getElementById('regMotherName').value = '';
-                document.getElementById('regMotherFather').value = '';
                 document.getElementById('regPhone').value = '';
                 document.getElementById('regNationalId').value = '';
                 document.getElementById('photoFileName').innerText = "اضغط هنا لالتقاط أو اختيار صورتك الشخصية...";
@@ -687,7 +798,6 @@
             switchAuthTab('login');
         }
 
-        /* ---------------- تسجيل دخول الطالب وعرض درجاته ---------------- */
         function loginStudent() {
             const enteredCode = document.getElementById('studentCode').value.trim();
             if (!enteredCode) {
@@ -695,7 +805,6 @@
                 return;
             }
 
-            // البحث عن الطالب في قاعدة البيانات عبر الكود
             database.ref('students').once('value', (snapshot) => {
                 const students = snapshot.val();
                 let found = false;
@@ -705,6 +814,7 @@
                         if (students[id].studentCode === enteredCode) {
                             found = true;
                             currentStudentData = { id, ...students[id] };
+                            closeAuthModal(); // إغلاق النافذة المنبثقة فوراً بعد النجاح
                             showStudentPortal();
                             break;
                         }
@@ -718,10 +828,9 @@
         }
 
         function showStudentPortal() {
-            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('announcementsSec').style.display = 'none'; // إخفاء الإعلانات العامة لإعطاء مساحة للوحة الطالب
             document.getElementById('studentPortal').style.display = 'block';
 
-            // معلومات الطالب والبروفايل
             const defaultAvatar = 'https://assets.onecompiler.app/42t37w25r/42t37vq8z/2.jpg';
             const gradeText = currentStudentData.grade == '1' ? 'الاول متوسط' : currentStudentData.grade == '2' ? 'الثاني متوسط' : 'الثالث متوسط';
             
@@ -734,11 +843,9 @@
                 </div>
             `;
 
-            // التحديث المستمر للدرجات والتنبيه الخاص
             database.ref(`students/${currentStudentData.id}`).on('value', (snapshot) => {
                 currentStudentData = { id: currentStudentData.id, ...snapshot.val() };
                 
-                // التنبيه السري الخاص
                 const pNotif = currentStudentData.private_notification;
                 const notifBox = document.getElementById('studentPrivateNotification');
                 if (pNotif && pNotif.trim() !== "") {
@@ -785,8 +892,8 @@
         function logoutStudent() {
             currentStudentData = null;
             document.getElementById('studentPortal').style.display = 'none';
-            document.getElementById('authContainer').style.display = 'block';
             document.getElementById('studentCode').value = '';
+            loadPublicAnnouncements(); // استعادة التبليغات العامة في الواجهة
             switchAuthTab('login');
         }
     </script>
