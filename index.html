@@ -327,7 +327,7 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .lang-btn {
@@ -346,6 +346,26 @@
         .lang-btn:hover {
             border-color: var(--color-blue);
             color: var(--color-blue);
+        }
+
+        /* تنسيق زر تسجيل الخروج الجديد */
+        .logout-btn {
+            background: none;
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: none; /* مخفي افتراضياً ويظهر فقط عند تسجيل الدخول */
+        }
+
+        .logout-btn:hover {
+            background-color: #ef4444;
+            color: #ffffff;
         }
 
         .menu-toggle {
@@ -901,7 +921,9 @@
                 </ul>
             </nav>
             <div class="header-left">
+                <!-- أزرار الدخول والخروج -->
                 <button class="lang-btn" id="btnAuthHeader" onclick="openAuthModal()">تسجيل دخول / إنشاء حساب</button>
+                <button class="logout-btn" id="btnLogout" onclick="handleLogout()">تسجيل الخروج</button>
             </div>
         </div>
     </header>
@@ -1006,7 +1028,7 @@
 
                     <h2>التأسيس والتاريخ والنمو الأكاديمي</h2>
                     <p>
-                        يرجع تاريخ تأسيس متوسطة الجوادين للبنين إلى عام 2008م. ومنذ انطلاقتها في هذا العام، سعت المدرسة بشكل دؤوب إلى تحقيق رسالتها في رفع وتطوير المستوى العلمي والتربوي لجميع الطلاب الساكنين في منطقة الشعب والمناطق المجاورة والمحيطة بها. وبفضل هذه الجهود المستمرة، نجحت المدرسة في بناء واكتساب سمعة طيبة جداً وشهرة واسعة بين أهالي المنطقة والطلبة على حد سواء، ويعود الفضل في هذه السمعة إلى ما تمتلكه المدرسة من كادر تدريسي متميز يمتلك الرصانة العلمية والخبرة التربوية الكافية لإدارة وتوجيه الطلاب.
+                        يرجع تاريخ تأسيس متوسطة الجوادين للبنين إلى عام 2008م. ومنذ انطلاقتها in هذا العام، سعت المدرسة بشكل دؤوب إلى تحقيق رسالتها في رفع وتطوير المستوى العلمي والتربوي لجميع الطلاب الساكنين في منطقة الشعب والمناطق المجاورة والمحيطة بها. وبفضل هذه الجهود المستمرة، نجحت المدرسة في بناء واكتساب سمعة طيبة جداً وشهرة واسعة بين أهالي المنطقة والطلبة على حد سواء، ويعود الفضل في هذه السمعة إلى ما تمتلكه المدرسة من كادر تدريسي متميز يمتلك الرصانة العلمية والخبرة التربوية الكافية لإدارة وتوجيه الطلاب.
                     </p>
                     <p>
                         خلال مسيرتها التي تمتد لأكثر من عقد ونصف، قامت المدرسة بتخريج آلاف الطلبة الذين واصلوا مسيرتهم بنجاح في الإعداديات والجامعات العراقية المرموقة. وتتميز الإدارة بحرصها على الانضباط العالي والالتزام بالزي المدرسي الموحد، وتوطيد العلاقات الاجتماعية الهادفة بين الملاك التدريسي وأولياء الأمور من خلال مجالس الآباء والمعلمين الدورية لتذليل العقبات الدراسية التي قد تواجه الطلبة في مسيرتهم الأكاديمية.
@@ -1288,23 +1310,66 @@
             const savedName = localStorage.getItem('studentName');
             if (savedName) {
                 updateHeaderWithUser(savedName);
+            } else {
+                // التأكيد على إخفاء زر تسجيل الخروج إذا لم يكن هناك مستخدم مسجل
+                document.getElementById('btnLogout').style.display = 'none';
             }
         }
 
+        // تحديث الهيدر وإظهار زر تسجيل الخروج
         function updateHeaderWithUser(name) {
             const btnHeader = document.getElementById('btnAuthHeader');
+            const btnLogout = document.getElementById('btnLogout');
             const btnHero = document.getElementById('btnHeroResults');
             
             if (btnHeader) {
                 btnHeader.textContent = "أهلاً، " + name;
                 btnHeader.style.borderColor = "#10b981";
                 btnHeader.style.color = "#10b981";
+                btnHeader.onclick = null; // نلغي حدث الفتح عند الضغط عليه لأنه يرحب به فقط
             }
+
+            if (btnLogout) {
+                btnLogout.style.display = "inline-block"; // إظهار زر تسجيل الخروج
+            }
+
             if (btnHero) {
                 btnHero.textContent = "لوحتي الخاصة والنتائج";
                 btnHero.onclick = () => {
                     alert("مرحباً بك مجدداً يا " + name + "! سيتم عرض لوحتك المخصصة ونتائجك فور رفعها وتدقيقها من قبل إدارة المدرسة.");
                 };
+            }
+        }
+
+        // دالة تسجيل الخروج الجديدة
+        function handleLogout() {
+            if (confirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟")) {
+                // مسح البيانات المحفوظة محلياً
+                localStorage.removeItem('studentName');
+                localStorage.removeItem('studentKey');
+
+                // إعادة تهيئة العناصر في الواجهة
+                const btnHeader = document.getElementById('btnAuthHeader');
+                const btnLogout = document.getElementById('btnLogout');
+                const btnHero = document.getElementById('btnHeroResults');
+
+                if (btnHeader) {
+                    btnHeader.textContent = "تسجيل دخول / إنشاء حساب";
+                    btnHeader.style.borderColor = "#d1d5db";
+                    btnHeader.style.color = "var(--color-text-dark)";
+                    btnHeader.onclick = openAuthModal; // إعادة تفعيل حدث الفتح
+                }
+
+                if (btnLogout) {
+                    btnLogout.style.display = "none"; // إخفاء زر الخروج مجدداً
+                }
+
+                if (btnHero) {
+                    btnHero.textContent = "نتائجي والتبليغات المخصصة";
+                    btnHero.onclick = openAuthModal; // إعادة تفعيل الفتح من الهيرو
+                }
+
+                alert("تم تسجيل الخروج بنجاح!");
             }
         }
 
