@@ -1419,33 +1419,94 @@
 
                 // بناء الترتيب الزمني الجديد للجداول مع درجات نصف ونهاية السنة
                 let gradesHtml = '';
-                gradesHtml += `
-                    <div class="grade-section-title">📊 نتائج امتحانات الكورس الأول </div>
-                    <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
-                        ${formatPeriod('c1_m1', 'الشهر الأول')}
-                        ${formatPeriod('c1_m2', 'الشهر الثاني')}
-                        ${formatPeriod('mid', 'نصف السنة')}
-                    </div>
-                    
-                    <div class="grade-section-title">📊 نتائج امتحانات الكورس الثاني </div>
-                    <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
-                        ${formatPeriod('c2_m1', 'الشهر الأول')}
-                        ${formatPeriod('c2_m2', 'الشهر الثاني')}
-                        ${formatPeriod('final', 'نهاية السنة')}
-                    </div>
-                `;
 
-                // بناء قسم التبليغات المخصصة للطالب من الأستاذ أسفل قائمة الدرجات
-                let teacherNotificationsHtml = `
-                    <div class="dashboard-private-notifications">
-                        <h4>✉️ التبليغات والرسائل الخاصة من الكادر التدريسي:</h4>
-                        <p style="font-size: 14.5px; color: #334155; line-height: 1.6;">
-                            ${(student.private_notification && student.private_notification.trim() !== "") 
-                                ? student.private_notification 
-                                : "لا توجد تبليغات خاصة بك حالياً من قِبل أساتذتك. استمر في تفوقك!"}
-                        </p>
-                    </div>
-                `;
+if (student.grades) {
+    gradesHtml = '<div class="student-sections">';
+
+    // مصفوفة المواد الدراسية الثابتة
+    const subjects = ["الإسلامية", "العربية", "الانكليزية", "الرياضيات", "الاجتماعيات", "الانسان وصحته", "الكيمياء", "الفيزياء", "الفرنسية"];
+
+    // دالة مساعدة لإنشاء جدول آمن بدون أن يخرب التنسيق وبأعمدة متطابقة تماماً
+    function generateTableHTML(title, termKey) {
+        let rows = '';
+        subjects.forEach(sub => {
+            // جلب الدرجة إذا كانت موجودة، أو وضع علامة فارغة مرتبة
+            let gradeVal = '';
+            if (student.grades[termKey] && student.grades[termKey][sub] !== undefined) {
+                gradeVal = student.grades[termKey][sub];
+            }
+            
+            // إذا كانت الدرجة فارغة تماماً، نعرض شرطة أو كلمة "لم تعلن" بشكل منسق يحافظ على العمودين
+            let displayGrade = gradeVal.trim() === '' ? '<span style="color:#94a3b8;">-</span>' : gradeVal;
+
+            rows += `
+                <tr>
+                    <td style="font-weight: 500; text-align: right; padding: 10px; border-bottom: 1px solid #e2e8f0;">${sub}</td>
+                    <td style="text-align: center; padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: ${gradeVal.trim() !== '' ? '#2563eb' : '#64748b'};">
+                        ${displayGrade}
+                    </td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div class="info-card" style="margin-top: 20px;">
+                <h3 style="color: var(--color-blue); margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">${title}</h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                        <tr style="background-color: #f8fafc;">
+                            <th style="text-align: right; padding: 10px; border-bottom: 2px solid #e2e8f0; color: #475569;">المادة</th>
+                            <th style="text-align: center; padding: 10px; border-bottom: 2px solid #e2e8f0; color: #475569; width: 100px;">الدرجة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
+
+    // 1. جدول درجات الكورس الأول
+    if (student.grades['first_term']) {
+        gradesHtml += generateTableHTML('درجات الكورس الأول', 'first_term');
+    }
+
+    // 2. جدول درجات نصف السنة (تم فصله تماماً بجداول مستقلة)
+    if (student.grades['mid_term']) {
+        gradesHtml += generateTableHTML('درجات امتحانات نصف السنة', 'mid_term');
+    }
+
+    // 3. جدول درجات الكورس الثاني (للصفوف غير المنتهية مثلاً)
+    if (student.grades['second_term']) {
+        gradesHtml += generateTableHTML('درجات الكورس الثاني', 'second_term');
+    }
+
+    // 4. جدول درجات نهاية السنة (يتم حذفه وإخفائه للثالث المتوسط حصراً)
+    // نفترض أن قيمة حقل الصف للثالث المتوسط مخزنة بـ "3" أو تحتوي على كلمة "الثالث"
+    const isThirdGrade = student.grade === '3' || (student.grade && student.grade.includes('الثالث'));
+
+    if (!isThirdGrade) {
+        if (student.grades['final_term']) {
+            gradesHtml += generateTableHTML('درجات نهاية السنة', 'final_term');
+        }
+    } else {
+        // ميزة إضافية اختيارية: إظهار تنويه بسيط لطلبة الثالث متوسط بدل الجدول المحذوف
+        gradesHtml += `
+            <div class="info-card" style="margin-top: 20px; border-right: 4px solid #e2e8f0; background: #f8fafc;">
+                <p style="color: #64748b; font-size: 13px; font-weight: 500;">💡 تنويه: درجات نهاية السنة لطلبة الصف الثالث المتوسط تعلن مركزياً من قبل وزارة التربية (الامتحانات الوزارية).</p>
+            </div>
+        `;
+    }
+
+    gradesHtml += '</div>';
+} else {
+    gradesHtml = `
+        <div class="info-card" style="margin-top: 20px; text-align: center; color: #64748b;">
+            <p>لا توجد درجات مسجلة لهذا الحساب حالياً.</p>
+        </div>
+    `;
+}
 
                 // دمج كل الأقسام وعرضها داخل الـ Modal
                 content.innerHTML = `
