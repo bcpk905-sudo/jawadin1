@@ -635,7 +635,7 @@
        function tryLogin() {
     const password = document.getElementById('adminPassword').value;
     // تأكد من تغيير كلمة السر هذه بكلمة السر الخاصة بك
-    if (password === "jawadin_secret_2026") { 
+    if (password === "123456") { 
         document.getElementById('loginModal').style.display = 'none';
         document.getElementById('adminDashboard').style.display = 'block';
         loadAllStudents(); // استدعاء دالة عرض الطلاب
@@ -732,11 +732,57 @@
 
         /* ---------------- قسم قاعدة بيانات الطلاب والدرجات ---------------- */
         function loadAllStudents() {
-            database.ref('students').on('value', (snapshot) => {
-                allStudentsData = snapshot.val() || {};
-                renderStudentsList();
+        const tableBody = document.getElementById('student-table-body');
+        if(!tableBody) return;
+        
+        database.ref('students').once('value').then((snapshot) => {
+            const students = snapshot.val();
+            tableBody.innerHTML = ''; 
+
+            if (students) {
+                Object.keys(students).forEach(key => {
+                    const student = students[key];
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${key}</td>
+                            <td>${student.fullName || 'غير معروف'}</td>
+                            <td>${student.grade || '-'}</td>
+                            <td>
+                                <button class="btn btn-edit" onclick="editGrades('${key}')">تعديل</button>
+                                <button class="btn btn-delete" onclick="showDeleteModal('${key}')">حذف</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        }).catch(err => console.error("خطأ:", err));
+    }
+
+    // 3. دالة الحذف (المودال)
+    let studentIdToDelete = null;
+    function showDeleteModal(id) {
+        studentIdToDelete = id;
+        document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+    }
+
+    function confirmDelete() {
+        if (studentIdToDelete) {
+            database.ref('students/' + studentIdToDelete).remove().then(() => {
+                alert("تم الحذف بنجاح");
+                loadAllStudents();
+                closeDeleteModal();
             });
         }
+    }
+
+    // 4. دالة تعديل الدرجات (أضفها لكي لا يظهر خطأ)
+    function editGrades(id) {
+        alert("جارٍ فتح واجهة تعديل درجات الطالب: " + id);
+    }
 
         function selectGrade(gradeNum) {
             currentSelectedGrade = gradeNum;
