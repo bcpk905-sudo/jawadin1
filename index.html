@@ -653,20 +653,21 @@
             color: #ffffff;
             padding: 6px 12px;
             border-radius: 6px;
-            margin: 20px 0 10px;
+            margin: 25px 0 12px;
+            text-align: right;
         }
 
         .grades-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 13.5px;
-            margin-bottom: 15px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            table-layout: fixed; /* يضمن عدم خربطة أو تمدد الأعمدة */
         }
 
         .grades-table th, .grades-table td {
             border: 1px solid #e2e8f0;
-            padding: 8px;
-            text-align: center;
+            padding: 10px;
         }
 
         .grades-table th {
@@ -982,6 +983,10 @@
 
     </div>
 
+    <section style="display:none;" id="system"></section>
+    <section style="display:none;" id="digital"></section>
+    <section style="display:none;" id="vision"></section>
+
     <footer id="mainFooter">
         <div id="footerText">جميع الحقوق محفوظة © 2026 متوسطة الجوادين للبنين</div>
         <div class="footer-credits" id="footerCredits">
@@ -1015,7 +1020,7 @@
 
                     <h2>التأسيس والتاريخ والنمو الأكاديمي</h2>
                     <p>
-                        يرجع تاريخ تأسيس متوسطة الجوادين للبنين إلى عام 2008م. ومنذ انطلاقتها في هذا العام، سعت المدرسة بشكل دؤوب إلى تحقيق رسالتها في رفع وتطوير المستوى العلمي والتربوي لجميع الطلاب الساكنين في منطقة الشعب والمناطق المجاورة والمحيطة بها. وبفضل هذه الجهود المستمرة، نجحت المدرسة في بناء واكتساب سمعة طيبة جداً وشهرة واسعة بين أهالي المنطقة والطلبة على حد سواء، ويعود الفضل في هذه السمعة إلى ما تمتلكه المدرسة من كادر تدريسي متميز يمتلك الرصانة العلمية والخبرة التربوية الكافية لإدارة وتوجيه الطلاب.
+                        يرجع تاريخ تأسيس متوسطة الجوادين للبنين إلى عام 2008م. ومنذ انطلاقتها في هذا عام، سعت المدرسة بشكل دؤوب إلى تحقيق رسالتها في رفع وتطوير المستوى العلمي والتربوي لجميع الطلاب الساكنين في منطقة الشعب والمناطق المجاورة والمحيطة بها. وبفضل هذه الجهود المستمرة، نجحت المدرسة في بناء واكتساب سمعة طيبة جداً وشهرة واسعة بين أهالي المنطقة والطلبة على حد سواء، ويعود الفضل في هذه السمعة إلى ما تمتلكه المدرسة من كادر تدريسي متميز يمتلك الرصانة العلمية والخبرة التربوية الكافية لإدارة وتوجيه الطلاب.
                     </p>
                     <p>
                         خلال مسيرتها التي تمتد لأكثر من عقد ونصف، قامت المدرسة بتخريج آلاف الطلبة الذين واصلوا مسيرتهم بنجاح في الإعداديات والجامعات العراقية المرموقة. وتتميز الإدارة بحرصها على الانضباط العالي والالتزام بالزي المدرسي الموحد، وتوطيد العلاقات الاجتماعية الهادفة بين الملاك التدريسي وأولياء الأمور من خلال مجالس الآباء والمعلمين الدورية لتذليل العقبات الدراسية التي قد تواجه الطلبة في مسيرتهم الأكاديمية.
@@ -1169,7 +1174,6 @@
             applyTranslations(lang);
         }
 
-        // دالة لتحديث حالة الزر العلوي (تسجيل الدخول / اسم الطالب)
         function updateHeaderAuthButton() {
             const savedStudent = localStorage.getItem('loggedStudent');
             const authBtn = document.getElementById('btnAuthHeader');
@@ -1212,8 +1216,6 @@
             });
         }
 
-        /* --- نظام إدارة الطلاب البرمجي الجديد والربط بـ Firebase --- */
-        
         function handleStudentGate() {
             const savedStudent = localStorage.getItem('loggedStudent');
             if (savedStudent) {
@@ -1259,7 +1261,6 @@
             });
         }
 
-        // معالجة رفع وحفظ استمارة التسجيل ومنع التكرار تماماً
         function processRegister() {
             const fullName = document.getElementById('regFullName').value.trim();
             const grade = document.getElementById('regGrade').value;
@@ -1276,7 +1277,6 @@
                 return;
             }
 
-            // منع التكرار: فحص الحسابات السابقة في Firebase
             database.ref('students').once('value').then((snapshot) => {
                 const allStudents = snapshot.val();
                 let exists = false;
@@ -1299,7 +1299,6 @@
                     return;
                 }
 
-                // تحويل الصورة الشخصية وحفظ البيانات بعد التأكد من عدم التكرار
                 const reader = new FileReader();
                 reader.readAsDataURL(photoFile);
                 reader.onload = function () {
@@ -1307,21 +1306,18 @@
 
                     let defaultGrades = {};
                     let subjects = [];
-                    // تحديد المواد حسب الصف بدقة متناهية مطابقة للإدارة
                     if (grade === '1' || grade === '2') {
-                        subjects = ['العربية', 'الاسلامية', 'الانكليزية', 'الرياضيات', 'الاجتماعيات', 'الاحياء', 'الكيمياء', 'الفيزياء', 'الاخلاقية', 'الفنية'];
+                        subjects = ['عربي', 'اسلاميه', 'انكليزي', 'رياضيات', 'اجتماعيات', 'احياء', 'كيمياء', 'فيزياء', 'اخلاقية', 'فنية'];
                     } else if (grade === '3') {
-                        subjects = ['العربية', 'الاسلامية', 'الادب', 'الاجتماعيات', 'الرياضيات', 'الانكليزية', 'الاحياء', 'الفيزياء', 'الكيمياء'];
+                        subjects = ['عربي', 'اسلامية', 'ادب', 'اجتماعيات', 'رياضيات', 'انكليزي', 'احياء', 'فيزياء', 'كيمياء'];
                     }
 
-                    // تهيئة الدرجات للمراحل الزمنية بالترتيب الصحيح مع درجات نصف ونهاية السنة
-                    const periods = ['c1_m1', 'c1_m2', 'mid', 'c2_m1', 'c2_m2', 'final'];
+                    const periods = ['كورس1_شهر1', 'كورس1_شهر2', 'نصف_السنة', 'كورس2_شهر1', 'كورس2_شهر2', 'نهاية_السنة'];
                     periods.forEach(p => {
                         defaultGrades[p] = {};
                         subjects.forEach(sub => {
-                            // شرط استثناء مادة الأدب للثالث متوسط في نصف السنة ونهاية السنة
-                            if (grade === '3' && sub === 'الادب' && (p === 'mid' || p === 'final')) {
-                                // تترك فارغة وخالية للامتثال لشروط الثالث متوسط
+                            if (grade === '3' && sub === 'ادب' && (p === 'نصف_السنة' || p === 'نهاية_السنة')) {
+                                // تترك فارغة
                             } else {
                                 defaultGrades[p][sub] = "لم تعلن بعد";
                             }
@@ -1332,7 +1328,7 @@
                         fullName, grade, classOption: classOpt, motherName, motherFatherName, phone, nationalId, password,
                         photo: base64Image,
                         grades: defaultGrades,
-                        private_notification: ""
+                        private_notifications: ""
                     };
 
                     database.ref('students/' + fullName).set(studentData, (error) => {
@@ -1372,7 +1368,7 @@
             });
         }
 
-        // جلب وبناء لوحة تحكم الطالب الكاملة بالتعديلات وهيكل الدرجات الجديد
+        // جلب وبناء لوحة تحكم الطالب الكاملة بالتعديلات وهيكل الدرجات المحدثة والثابتة
         function loadStudentDashboard(fullName) {
             database.ref('students/' + fullName).once('value').then((snapshot) => {
                 const student = snapshot.val();
@@ -1383,9 +1379,8 @@
                 
                 let gradeText = student.grade === '1' ? 'الأول متوسط' : student.grade === '2' ? 'الثاني متوسط' : 'الثالث متوسط';
                 
-                // بناء التنبيه المخصص السريع (إن وجد في الأعلى)
                 let alertPvtHtml = '';
-                if(student.private_notification && student.private_notification.trim() !== "") {
+                if(student.private_notifications && student.private_notifications.trim() !== "") {
                     alertPvtHtml = `
                         <div class="badge-alert-pvt">
                             <strong>📢 إشعار هام:</strong> يرجى مراجعة التبليغات المخصصة لك في أسفل اللوحة.
@@ -1393,122 +1388,101 @@
                     `;
                 }
 
-                // دالة بناء جداول الدرجات التفاعلية
+                // دالة بناء جداول الدرجات التفاعلية - آمنة ومحاذاتها ثابتة عمودين دائماً
                 const formatPeriod = (pKey, title) => {
                     let tableRows = '';
                     const pData = student.grades ? student.grades[pKey] : null;
                     if(pData) {
                         for(let sub in pData) {
                             let score = pData[sub];
-                            let scoreStyle = score === "لم تعلن بعد" ? "color: #94a3b8; font-style: italic;" : "font-weight: bold; color: var(--color-blue);";
-                            tableRows += `<tr><td><strong>${sub}</strong></td><td style="${scoreStyle}">${score}</td></tr>`;
+                            // إصلاح المحاذاة: استبدال النص الفارغ بشرطة منسقة للحفاظ على هيكل ثنائي الأعمدة
+                            let isNoGrade = !score || score === "لم تعلن بعد" || score.trim() === "";
+                            let displayScore = isNoGrade ? '<span style="color: #94a3b8;">-</span>' : score;
+                            let scoreStyle = isNoGrade ? "color: #94a3b8; font-style: italic; text-align: center;" : "font-weight: bold; color: var(--color-blue); text-align: center;";
+                            
+                            tableRows += `
+                                <tr>
+                                    <td style="text-align: right; font-weight: 500;"><strong>${sub}</strong></td>
+                                    <td style="${scoreStyle}">${displayScore}</td>
+                                </tr>
+                            `;
                         }
                     }
-                    if(!tableRows) return ''; // إذا لم تكن هناك درجات للجدول (كأن يكون تم استثناء الأدب بالكامل منه ولم يبق شيء)
+                    if(!tableRows) return ''; 
                     
                     return `
-                        <div style="flex: 1; min-width: 200px;">
-                            <h4 style="text-align: center; margin-bottom: 5px; color: #475569;">${title}</h4>
-                            <table class="grades-table">
-                                <thead><tr><th>المادة</th><th>الدرجة</th></tr></thead>
+                        <div style="flex: 1; min-width: 240px; background: #ffffff; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.01);">
+                            <h4 style="text-align: center; margin-bottom: 8px; color: #475569; border-bottom: 2px solid #f1f5f9; padding-bottom: 4px;">${title}</h4>
+                            <table class="grades-table" style="width: 100%; table-layout: fixed;">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: right; width: 65%;">المادة</th>
+                                        <th style="text-align: center; width: 35%;">الدرجة</th>
+                                    </tr>
+                                </thead>
                                 <tbody>${tableRows}</tbody>
                             </table>
                         </div>
                     `;
                 };
 
-                // بناء الترتيب الزمني الجديد للجداول مع درجات نصف ونهاية السنة
                 let gradesHtml = '';
+                
+                // 1. نتائج امتحانات الكورس الأول (شهر أول وشهر ثاني)
+                gradesHtml += `
+                    <div class="grade-section-title">📊 نتائج امتحانات الكورس الأول</div>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                        ${formatPeriod('كورس1_شهر1', 'الشهر الأول')}
+                        ${formatPeriod('كورس1_شهر2', 'الشهر الثاني')}
+                    </div>
+                `;
 
-if (student.grades) {
-    gradesHtml = '<div class="student-sections">';
+                // 2. درجات امتحانات نصف السنة (مفصولة تماماً في جدول مستقل)
+                gradesHtml += `
+                    <div class="grade-section-title" style="background-color: var(--color-blue);">📝 درجات امتحانات نصف السنة</div>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                        ${formatPeriod('نصف_السنة', 'امتحان نصف السنة')}
+                    </div>
+                `;
+                
+                // 3. نتائج امتحانات الكورس الثاني (شهر أول وشهر ثاني)
+                gradesHtml += `
+                    <div class="grade-section-title">📊 نتائج امتحانات الكورس الثاني</div>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                        ${formatPeriod('كورس2_شهر1', 'الشهر الأول')}
+                        ${formatPeriod('كورس2_شهر2', 'الشهر الثاني')}
+                    </div>
+                `;
 
-    // مصفوفة المواد الدراسية الثابتة
-    const subjects = ["الإسلامية", "العربية", "الانكليزية", "الرياضيات", "الاجتماعيات", "الانسان وصحته", "الكيمياء", "الفيزياء", "الفرنسية"];
+                // 4. درجات نهاية السنة (تُحذف وتُخفى للثالث متوسط حصراً مع تنويه مخصص)
+                const isThirdGrade = student.grade === '3';
+                if (!isThirdGrade) {
+                    gradesHtml += `
+                        <div class="grade-section-title" style="background-color: var(--color-green);">🎓 درجات امتحانات نهاية السنة</div>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                            ${formatPeriod('نهاية_السنة', 'امتحان نهاية السنة')}
+                        </div>
+                    `;
+                } else {
+                    gradesHtml += `
+                        <div class="grade-section-title" style="background-color: #64748b;">🎓 درجات امتحانات نهاية السنة</div>
+                        <div style="background: #f8fafc; border-right: 4px solid var(--color-blue); padding: 15px; border-radius: 8px; text-align: right; margin-top: 10px;">
+                            <p style="color: #475569; font-size: 14px; font-weight: bold; margin: 0;">💡 تنويه لطلبة الثالث المتوسط: درجات الوزاري (نهاية السنة) تُعلن مركزياً من قبل وزارة التربية.</p>
+                        </div>
+                    `;
+                }
 
-    // دالة مساعدة لإنشاء جدول آمن بدون أن يخرب التنسيق وبأعمدة متطابقة تماماً
-    function generateTableHTML(title, termKey) {
-        let rows = '';
-        subjects.forEach(sub => {
-            // جلب الدرجة إذا كانت موجودة، أو وضع علامة فارغة مرتبة
-            let gradeVal = '';
-            if (student.grades[termKey] && student.grades[termKey][sub] !== undefined) {
-                gradeVal = student.grades[termKey][sub];
-            }
-            
-            // إذا كانت الدرجة فارغة تماماً، نعرض شرطة أو كلمة "لم تعلن" بشكل منسق يحافظ على العمودين
-            let displayGrade = gradeVal.trim() === '' ? '<span style="color:#94a3b8;">-</span>' : gradeVal;
+                let teacherNotificationsHtml = `
+                    <div class="dashboard-private-notifications">
+                        <h4>✉️ التبليغات والرسائل الخاصة من الكادر التدريسي:</h4>
+                        <p style="font-size: 14.5px; color: #334155; line-height: 1.6;">
+                            ${(student.private_notifications && student.private_notifications.trim() !== "") 
+                                ? student.private_notifications 
+                                : "لا توجد تبليغات خاصة بك حالياً من قِبل أساتذتك. استمر في تفوقك!"}
+                        </p>
+                    </div>
+                `;
 
-            rows += `
-                <tr>
-                    <td style="font-weight: 500; text-align: right; padding: 10px; border-bottom: 1px solid #e2e8f0;">${sub}</td>
-                    <td style="text-align: center; padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: ${gradeVal.trim() !== '' ? '#2563eb' : '#64748b'};">
-                        ${displayGrade}
-                    </td>
-                </tr>
-            `;
-        });
-
-        return `
-            <div class="info-card" style="margin-top: 20px;">
-                <h3 style="color: var(--color-blue); margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">${title}</h3>
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr style="background-color: #f8fafc;">
-                            <th style="text-align: right; padding: 10px; border-bottom: 2px solid #e2e8f0; color: #475569;">المادة</th>
-                            <th style="text-align: center; padding: 10px; border-bottom: 2px solid #e2e8f0; color: #475569; width: 100px;">الدرجة</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${rows}
-                    </tbody>
-                </table>
-            </div>
-        `;
-    }
-
-    // 1. جدول درجات الكورس الأول
-    if (student.grades['first_term']) {
-        gradesHtml += generateTableHTML('درجات الكورس الأول', 'first_term');
-    }
-
-    // 2. جدول درجات نصف السنة (تم فصله تماماً بجداول مستقلة)
-    if (student.grades['mid_term']) {
-        gradesHtml += generateTableHTML('درجات امتحانات نصف السنة', 'mid_term');
-    }
-
-    // 3. جدول درجات الكورس الثاني (للصفوف غير المنتهية مثلاً)
-    if (student.grades['second_term']) {
-        gradesHtml += generateTableHTML('درجات الكورس الثاني', 'second_term');
-    }
-
-    // 4. جدول درجات نهاية السنة (يتم حذفه وإخفائه للثالث المتوسط حصراً)
-    // نفترض أن قيمة حقل الصف للثالث المتوسط مخزنة بـ "3" أو تحتوي على كلمة "الثالث"
-    const isThirdGrade = student.grade === '3' || (student.grade && student.grade.includes('الثالث'));
-
-    if (!isThirdGrade) {
-        if (student.grades['final_term']) {
-            gradesHtml += generateTableHTML('درجات نهاية السنة', 'final_term');
-        }
-    } else {
-        // ميزة إضافية اختيارية: إظهار تنويه بسيط لطلبة الثالث متوسط بدل الجدول المحذوف
-        gradesHtml += `
-            <div class="info-card" style="margin-top: 20px; border-right: 4px solid #e2e8f0; background: #f8fafc;">
-                <p style="color: #64748b; font-size: 13px; font-weight: 500;">💡 تنويه: درجات نهاية السنة لطلبة الصف الثالث المتوسط تعلن مركزياً من قبل وزارة التربية (الامتحانات الوزارية).</p>
-            </div>
-        `;
-    }
-
-    gradesHtml += '</div>';
-} else {
-    gradesHtml = `
-        <div class="info-card" style="margin-top: 20px; text-align: center; color: #64748b;">
-            <p>لا توجد درجات مسجلة لهذا الحساب حالياً.</p>
-        </div>
-    `;
-}
-
-                // دمج كل الأقسام وعرضها داخل الـ Modal
                 content.innerHTML = `
                     ${alertPvtHtml}
                     <div class="student-dashboard-grid">
