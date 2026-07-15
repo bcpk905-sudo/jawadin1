@@ -832,7 +832,7 @@
                 </ul>
             </nav>
             <div class="header-left">
-                <!-- تم استبدال دكمة التلغرام بدكمة الدخول الفورية التفاعلية -->
+                <!-- دكمة تسجيل دخول / إنشاء حساب التفاعلية الديناميكية -->
                 <button onclick="handleStudentGate()" class="lang-btn" id="btnAuthHeader" style="background-color: var(--color-blue); color: white; border: none; font-weight: bold; padding: 8px 18px;">تسجيل دخول / انشاء حساب</button>
             </div>
         </div>
@@ -1170,7 +1170,7 @@
             applyTranslations(lang);
         }
 
-        // دالة لتحديث حالة الزر العلوي (تسجيل الدخول / اسم الطالب)
+        // تحديث حالة الزر العلوي ديناميكياً ليظهر الاسم الأول للطالب المسجل
         function updateHeaderAuthButton() {
             const savedStudent = localStorage.getItem('loggedStudent');
             const authBtn = document.getElementById('btnAuthHeader');
@@ -1180,7 +1180,7 @@
                 authBtn.innerText = `مرحباً، ${firstName} 👋`;
                 authBtn.style.backgroundColor = "var(--color-green)";
             } else {
-                authBtn.innerText = currentLang === 'ar' ? "تسجيل دخول / إنشاء حساب" : "Login / Register";
+                authBtn.innerText = currentLang === 'ar' ? "تسجيل دخول / انشاء حساب" : "Login / Register";
                 authBtn.style.backgroundColor = "var(--color-blue)";
             }
         }
@@ -1260,7 +1260,7 @@
             });
         }
 
-        // معالجة رفع وحفظ استمارة التسجيل ومنع التكرار
+        // معالجة وحفظ استمارة التسجيل ومنع تكرار الحساب بنفس المعلومات
         function processRegister() {
             const fullName = document.getElementById('regFullName').value.trim();
             const grade = document.getElementById('regGrade').value;
@@ -1277,13 +1277,13 @@
                 return;
             }
 
-            // منع التكرار: الفحص في Firebase أولاً قبل التسجيل
+            // منع التكرار: الفحص الشامل داخل Firebase
             database.ref('students').once('value').then((snapshot) => {
                 const allStudents = snapshot.val();
                 let exists = false;
 
                 if (allStudents) {
-                    // الفحص عن طريق الاسم الرباعي كمفتاح أو رقم الهوية الموحدة داخل الحسابات
+                    // الفحص عن طريق الاسم كـ Key رئيسي، أو رقم الهوية الموحدة لتأمين المنع
                     if (allStudents[fullName]) {
                         exists = true;
                     } else {
@@ -1301,7 +1301,7 @@
                     return;
                 }
 
-                // تحويل الصورة الشخصية وحفظ البيانات
+                // تحويل الصورة الشخصية وحفظ البيانات بعد التأكد من عدم التكرار
                 const reader = new FileReader();
                 reader.readAsDataURL(photoFile);
                 reader.onload = function () {
@@ -1309,20 +1309,21 @@
 
                     let defaultGrades = {};
                     let subjects = [];
+                    // تهيئة قائمة المواد المخصصة لكل مرحلة
                     if (grade === '1' || grade === '2') {
-                        subjects = ['عربي', 'اسلاميه', 'انكليزي', 'رياضيات', 'اجتماعيات', 'احياء', 'كيمياء', 'فيزياء', 'اخلاقية', 'فنية'];
+                        subjects = ['عربي', 'اسلامية', 'انكليزي', 'رياضيات', 'اجتماعيات', 'احياء', 'كيمياء', 'فيزياء', 'اخلاقية', 'فنية'];
                     } else if (grade === '3') {
                         subjects = ['عربي', 'اسلامية', 'ادب', 'اجتماعيات', 'رياضيات', 'انكليزي', 'احياء', 'فيزياء', 'كيمياء'];
                     }
 
-                    // تهيئة الدرجات للكورسات مع إضافة "نصف السنة" و "نهاية السنة"
+                    // هيكلة فترات الاختبار مع إدراج نصف السنة ونهاية السنة بعد الكورسات
                     const periods = ['كورس1_شهر1', 'كورس1_شهر2', 'نصف_السنة', 'كورس2_شهر1', 'كورس2_شهر2', 'نهاية_السنة'];
                     periods.forEach(p => {
                         defaultGrades[p] = {};
                         subjects.forEach(sub => {
-                            // التحقق لاستثناء الأدب للثالث متوسط في نصف ونهاية السنة
+                            // تطبيق الاستثناء: إخلاء جدول نصف ونهاية السنة من مادة "الأدب" لطلاب الثالث متوسط
                             if (grade === '3' && sub === 'ادب' && (p === 'نصف_السنة' || p === 'نهاية_السنة')) {
-                                // لا تضيف مادة الأدب لهذين الجدولين
+                                // لا يتم إدراج مادة الأدب لهاتين الفترتين
                             } else {
                                 defaultGrades[p][sub] = "لم تعلن بعد";
                             }
@@ -1340,7 +1341,7 @@
                         if (error) {
                             alert('حدث خطأ أثناء حفظ البيانات، يرجى المحاولة لاحقاً.');
                         } else {
-                            alert('تم إنشاء حسابك بنجاح يا بطل! يمكنك الآن الدخول لاستعراض لوحتك.');
+                            alert('تم إنشاء حسابك بنجاح يا بطل! يمكنك الآن الدخول واستعراض لوحتك.');
                             localStorage.setItem('loggedStudent', JSON.stringify({ fullName }));
                             updateHeaderAuthButton();
                             closeModal('studentGateModal');
@@ -1373,7 +1374,7 @@
             });
         }
 
-        // جلب وبناء لوحة تحكم الطالب الكاملة
+        // جلب وبناء لوحة تحكم الطالب الكاملة وعرض النتائج والتبليغات
         function loadStudentDashboard(fullName) {
             database.ref('students/' + fullName).once('value').then((snapshot) => {
                 const student = snapshot.val();
@@ -1384,7 +1385,7 @@
                 
                 let gradeText = student.grade === '1' ? 'الأول متوسط' : student.grade === '2' ? 'الثاني متوسط' : 'الثالث متوسط';
                 
-                // 1. بناء التنبيه المخصص السريع (إن وجد في الأعلى)
+                // تنبيه علوي سريع مخصص لوجود إشعار
                 let alertPvtHtml = '';
                 if(student.private_notifications && student.private_notifications.trim() !== "") {
                     alertPvtHtml = `
@@ -1394,7 +1395,7 @@
                     `;
                 }
 
-                // دالة بناء جداول الدرجات
+                // دالة صياغة وبناء جداول فترات الدرجات
                 const formatPeriod = (pKey, title) => {
                     let tableRows = '';
                     const pData = student.grades ? student.grades[pKey] : null;
@@ -1405,10 +1406,10 @@
                             tableRows += `<tr><td><strong>${sub}</strong></td><td style="${scoreStyle}">${score}</td></tr>`;
                         }
                     }
-                    if(!tableRows) return ''; // إذا لم تكن هناك درجات للجدول (كأن يكون تم استثناء الأدب بالكامل منه ولم يبق شيء)
+                    if(!tableRows) return ''; 
                     
                     return `
-                        <div style="flex: 1; min-width: 220px;">
+                        <div style="flex: 1; min-width: 200px;">
                             <h4 style="text-align: center; margin-bottom: 5px; color: #475569;">${title}</h4>
                             <table class="grades-table">
                                 <thead><tr><th>المادة</th><th>الدرجة</th></tr></thead>
@@ -1418,7 +1419,7 @@
                     `;
                 };
 
-                // 2. بناء جداول الدرجات متضمنة الكورس الأول ونصف السنة والكورس الثاني ونهاية السنة
+                // بناء الترتيب المطلوب للجداول: الكورس الأول يتبعه نصف السنة، والكورس الثاني يتبعه نهاية السنة
                 let gradesHtml = '';
                 gradesHtml += `
                     <div class="grade-section-title">📊 نتائج امتحانات الكورس الأول ونصف السنة</div>
@@ -1436,7 +1437,7 @@
                     </div>
                 `;
 
-                // 3. بناء قسم التبليغات المخصصة للطالب من الأستاذ أسفل قائمة الدرجات
+                // بناء قسم التبليغات المخصصة للطالب من الأستاذ ليوضع أسفل قائمة وجداول الدرجات مباشرةً
                 let teacherNotificationsHtml = `
                     <div class="dashboard-private-notifications">
                         <h4>✉️ التبليغات والرسائل الخاصة من الكادر التدريسي:</h4>
@@ -1448,7 +1449,7 @@
                     </div>
                 `;
 
-                // دمج كل الأقسام وعرضها داخل الـ Modal
+                // دمج الأجزاء وعرضها بالترتيب المطلوب والنهائي
                 content.innerHTML = `
                     ${alertPvtHtml}
                     <div class="student-dashboard-grid">
