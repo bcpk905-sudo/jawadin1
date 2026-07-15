@@ -74,7 +74,7 @@
             color: var(--color-blue);
         }
 
-        /* زر تسجيل الدخول في الهيدر */
+        /* زر تسجيل الدخول الجديد في الهيدر */
         .btn-header-login {
             background-color: #f1f5f9;
             color: #475569;
@@ -96,11 +96,11 @@
 
         @media (max-width: 768px) {
             .navbar-menu {
-                display: none; /* إخفاء القائمة في الموبايل لتبسيط الواجهة */
+                display: none;
             }
         }
 
-        /* --- قسم البطولة (Hero Section) --- */
+        /* --- قسم الهيرو (الواجهة الترحيبية) --- */
         .hero {
             background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(241,245,249,1) 100%);
             padding: 60px 20px;
@@ -163,13 +163,13 @@
             background-color: rgba(37, 99, 235, 0.05);
         }
 
-        /* --- المحتوى الرئيسي (لوحة المدرسة الإدارية والتبليغات) --- */
+        /* --- المحتوى الرئيسي وتخطيط الصفحة --- */
         .main-layout {
             max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 290px 1fr;
             gap: 30px;
         }
 
@@ -179,7 +179,7 @@
             }
         }
 
-        /* كارت معلومات المدرسة الجانبي */
+        /* كارت معلومات المدرسة الجانبي الكامل */
         .school-profile-card {
             background-color: #ffffff;
             border: 1px solid var(--border-color);
@@ -226,14 +226,24 @@
             color: var(--color-text-dark);
         }
 
-        /* قسم التبليغات والتعميمات */
-        .announcements-container h2 {
+        /* حاوية الأقسام الرئيسية */
+        .sections-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* العناوين والتصميم العام للأقسام */
+        .section-block h2 {
             font-size: 20px;
             font-weight: 800;
             color: var(--color-text-dark);
             margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
         }
 
+        /* التبليغات والتعميمات */
         .announcements-list {
             display: flex;
             flex-direction: column;
@@ -272,7 +282,82 @@
             border: 1px solid var(--border-color);
         }
 
-        /* واجهة لوحة الطالب الشخصية (تظهر مكان الهيرو والتبليغات بعد تسجيل الدخول) */
+        /* قسم رؤية المدرسة وأهدافها */
+        .vision-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .vision-card p {
+            font-size: 14.5px;
+            color: #334155;
+            margin-bottom: 15px;
+        }
+
+        .objectives-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .objectives-list li {
+            font-size: 13.5px;
+            font-weight: 500;
+            color: #475569;
+            padding-right: 20px;
+            position: relative;
+        }
+
+        .objectives-list li::before {
+            content: "✦";
+            position: absolute;
+            right: 0;
+            color: var(--color-blue);
+            font-weight: bold;
+        }
+
+        /* قسم الدعم الطلابي والشكاوى */
+        .support-card {
+            background-color: #fef2f2;
+            border: 1px solid #fee2e2;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .support-card p {
+            font-size: 14px;
+            color: #991b1b;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .support-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-support {
+            background-color: #ef4444;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13.5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-support:hover {
+            background-color: #dc2626;
+        }
+
+        /* --- واجهة لوحة الطالب الشخصية بعد تسجيل الدخول --- */
         .student-portal {
             display: none;
             max-width: 800px;
@@ -614,16 +699,15 @@
         <a href="#" class="navbar-brand">الجوادين<span>.</span></a>
         <ul class="navbar-menu">
             <li><a href="#" class="active">الرئيسية</a></li>
-            <li><a href="#">النظام الدراسي</a></li>
-            <li><a href="#">التواصل الرقمي</a></li>
-            <li><a href="#">التبليغات</a></li>
-            <li><a href="#">رؤية المدرسة</a></li>
+            <li><a href="#vision-section">رؤية المدرسة</a></li>
+            <li><a href="#support-section">الدعم الطلابي</a></li>
+            <li><a href="#announcements-section">التبليغات</a></li>
         </ul>
-        <!-- زر تسجيل الدخول المستبدل من زر قناة تليجرام الدائري -->
-        <button class="btn-header-login" onclick="openAuthModal()">تسجيل دخول / إنشاء حساب</button>
+        <!-- زر تسجيل الدخول الجديد المستبدل -->
+        <button class="btn-header-login" onclick="openAuthModal()">تسجيل دخول أو إنشاء حساب</button>
     </nav>
 
-    <!-- واجهة الموقع الرئيسي (يتم إخفاؤها فقط عند دخول الطالب للوحة درجاته) -->
+    <!-- واجهة الموقع الرئيسي بالكامل -->
     <div id="mainWebsiteSection">
         
         <!-- قسم الهيرو (الواجهة الرئيسية الترحيبية) -->
@@ -632,7 +716,7 @@
             <p>صرح علمي متميز يسعى لبناء أجيال واعدة قادرة على التفوق والنجاح المستمر.</p>
             <div class="hero-buttons">
                 <a href="#" class="btn-hero btn-hero-primary">النظام الدراسي والمرافق</a>
-                <!-- زر نتائجي والتبليغات المخصصة المستبدل من زر التليجرام المفرغ -->
+                <!-- زر نتائجي والتبليغات المخصصة المستبدل والمربوط بالنافذة المنبثقة -->
                 <button class="btn-hero btn-hero-secondary" onclick="openAuthModal()">نتائجي والتبليغات المخصصة</button>
             </div>
         </header>
@@ -640,7 +724,7 @@
         <!-- المحتوى من التبليغات والمعلومات الجانبية للمدرسة -->
         <main class="main-layout">
             
-            <!-- كارت الملف والتعريف الجانبي للمدرسة -->
+            <!-- كارت الملف والتعريف الجانبي للمدرسة (كامل التفاصيل دون أي حذف) -->
             <aside class="school-profile-card">
                 <img src="2.jpg" onerror="this.onerror=null; this.src='https://assets.onecompiler.app/42t37w25r/42t37vq8z/2.jpg';" class="school-logo" alt="شعار المدرسة">
                 <h3>شعار متوسطة الجوادين للبنين</h3>
@@ -657,21 +741,67 @@
                         <td class="label">المكان</td>
                         <td class="value">بغداد، الشعب، الرصافة الأولى</td>
                     </tr>
+                    <tr>
+                        <td class="label">الوزارة</td>
+                        <td class="value">وزارة التربية العراقية</td>
+                    </tr>
+                    <tr>
+                        <td class="label">المديرية</td>
+                        <td class="value">تربية الرصافة الأولى</td>
+                    </tr>
+                    <tr>
+                        <td class="label">المراحل الدراسية</td>
+                        <td class="value">الأول، الثاني، الثالث المتوسط</td>
+                    </tr>
+                    <tr>
+                        <td class="label">نوع المدرسة</td>
+                        <td class="value">حكومي (بنين)</td>
+                    </tr>
                 </table>
             </aside>
 
-            <!-- التبليغات والتعميمات الرسمية -->
-            <section class="announcements-container">
-                <h2>التبليغات والتعميمات الإدارية</h2>
-                <div class="announcements-list" id="publicAnnouncementsList">
-                    <!-- التبليغات تظهر هنا تلقائياً من Firebase -->
-                </div>
-            </section>
+            <!-- حاوية الأقسام الرئيسية على اليمين لتفادي الفراغات -->
+            <div class="sections-wrapper">
+                
+                <!-- 1. قسم التبليغات والتعميمات الرسمية -->
+                <section class="section-block" id="announcements-section">
+                    <h2>التبليغات والتعميمات الإدارية</h2>
+                    <div class="announcements-list" id="publicAnnouncementsList">
+                        <!-- التبليغات تظهر هنا تلقائياً من Firebase -->
+                    </div>
+                </section>
+
+                <!-- 2. قسم رؤية المدرسة وأهدافها (الذي تم استرجاعه بالكامل) -->
+                <section class="section-block" id="vision-section">
+                    <h2>رؤية المدرسة وأهدافها التربوية</h2>
+                    <div class="vision-card">
+                        <p>تسعى متوسطة الجوادين للبنين دائماً إلى تقديم بيئة تعليمية محفزة وداعمة للطلبة، من خلال مواكبة المناهج الحديثة، وتنمية المهارات الإبداعية، والاهتمام بالجانب الأخلاقي والتربوي جنباً إلى جنب مع التحصيل الأكاديمي المتميز لإعداد جيل يبني الوطن بكل ثقة واقتدار.</p>
+                        <ul class="objectives-list">
+                            <li>تحسين مستوى التحصيل الدراسي وتحفيز الطلبة على نيل المراتب الأولى.</li>
+                            <li>توفير قنوات تواصل إلكترونية مباشرة وسريعة بين الإدارة والطلبة وأولياء الأمور.</li>
+                            <li>توجيه طاقات الطلاب لبناء شخصيات مسؤولة ومثقفة تخدم مجتمعها.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 3. قسم الدعم الطلابي والشكاوى (الذي تم استرجاعه بالكامل) -->
+                <section class="section-block" id="support-section">
+                    <h2>مركز الدعم الطلابي والشكاوى</h2>
+                    <div class="support-card">
+                        <p>تلتزم إدارة متوسطة الجوادين للبنين بالاستماع لآراء طلابها ومعالجة أي شكاوى أو مقترحات تساهم في تطوير وتيسير رحلتهم الأكاديمية. بإمكانك إرسال شكواك أو اقتراحك بشكل سري وسريع للإدارة مباشرة.</p>
+                        <div class="support-links">
+                            <a href="#" class="btn-support" onclick="alert('سيتم فتح نموذج تقديم الشكاوى والمقترحات قريباً بالتنسيق مع الإدارة!')">تقديم شكوى أو مقترح</a>
+                            <a href="#" class="btn-support" style="background-color: var(--color-blue);" onclick="openAuthModal()">تحديثات الطالب الشخصية</a>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
 
         </main>
     </div>
 
-    <!-- واجهة الطالب الشخصية بعد الدخول بنجاح (مخفية افتراضياً وتظهر فقط عند تسجيل الدخول) -->
+    <!-- واجهة الطالب الشخصية بعد الدخول بنجاح (تظهر وتخفي الواجهة الأساسية) -->
     <div class="student-portal" id="studentPortal">
         <div class="portal-card">
             <div class="portal-header">
@@ -835,7 +965,6 @@
             loadPublicAnnouncements();
             updateRegisterSections();
 
-            // إغلاق النافذة المنبثقة عند الضغط على المساحة الفارغة خارجها
             window.onclick = function(event) {
                 const modal = document.getElementById('authModal');
                 if (event.target === modal) {
@@ -983,8 +1112,8 @@
                         if (students[id].studentCode === enteredCode) {
                             found = true;
                             currentStudentData = { id, ...students[id] };
-                            closeAuthModal(); // إغلاق النافذة المنبثقة
-                            showStudentPortal(); // إظهار لوحة الطالب الشخصية
+                            closeAuthModal();
+                            showStudentPortal();
                             break;
                         }
                     }
@@ -997,7 +1126,6 @@
         }
 
         function showStudentPortal() {
-            // إخفاء واجهة الموقع الرئيسي بالكامل وعرض بوابة الطالب
             document.getElementById('mainWebsiteSection').style.display = 'none';
             document.getElementById('studentPortal').style.display = 'block';
 
