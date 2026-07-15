@@ -2,71 +2,62 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>لوحة التحكم الإدارية - متوسطة الجوادين</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <title>لوحة التحكم - متوسطة الجوادين</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
-        body { font-family: 'Tajawal', sans-serif; background: #f1f5f9; padding: 20px; }
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; }
-        button { padding: 10px 20px; cursor: pointer; background: #2563eb; color: white; border: none; border-radius: 6px; }
-        .student-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
+        body { font-family: sans-serif; background: #f1f5f9; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        select, button { padding: 10px; margin: 5px; border-radius: 5px; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>1. إدارة التبليغات العامة</h2>
-    <textarea id="genNotif" placeholder="نص التبليغ العام..."></textarea>
-    <button onclick="publishGeneral()">نشر التبليغ العام</button>
-</div>
-
-<div class="card">
-    <h2>2. قاعدة بيانات الطلاب</h2>
-    <select id="selectGrade" onchange="loadStudents()">
+    <h3>إدارة قاعدة بيانات الطلاب</h3>
+    <select id="selectGrade" onchange="showSections()">
         <option value="">اختر الصف</option>
-        <option value="1">الأول المتوسط</option>
-        <option value="2">الثاني المتوسط</option>
-        <option value="3">الثالث المتوسط</option>
+        <option value="1">الأول</option>
+        <option value="2">الثاني</option>
+        <option value="3">الثالث</option>
+    </select>
+    <select id="selectSection" onchange="loadStudents()">
+        <option value="">اختر الشعبة</option>
+        <option value="أ">أ</option><option value="ب">ب</option>
+        <option value="ج">ج</option><option value="د">د</option>
+        <option value="هـ">هـ</option>
     </select>
     <div id="studentsList"></div>
 </div>
 
-<script>
-    const firebaseConfig = { databaseURL: "https://jawadin-school1-default-rtdb.firebaseio.com" };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+<div id="studentPanel" class="card" style="display:none;">
+    <h3 id="studentNameDisplay"></h3>
+    <button onclick="addGrades()">إضافة درجات</button>
+    <button onclick="sendPrivateNotif()">إرسال تبليغ خاص</button>
+</div>
 
-    function publishGeneral() {
-        const text = document.getElementById('genNotif').value;
-        const pass = prompt("أدخل الرمز السري:");
-        if(pass !== "jawadin_secret_2026") return alert("خطأ!");
-        db.ref('notifications').push({ text: text, date: new Date().toLocaleDateString() });
-        alert("تم النشر!");
-    }
+<script>
+    const db = firebase.database();
 
     function loadStudents() {
         const grade = document.getElementById('selectGrade').value;
-        if(!grade) return;
+        const section = document.getElementById('selectSection').value;
         const list = document.getElementById('studentsList');
-        list.innerHTML = "جاري التحميل...";
         
         db.ref('students').orderByChild('grade').equalTo(grade).on('value', snap => {
-            const students = snap.val();
             list.innerHTML = "";
-            for(let id in students) {
-                list.innerHTML += `<div class="student-item">
-                    <span>${students[id].name} - ${students[id].class}</span>
-                    <button onclick="editStudent('${id}')">إدارة درجاته</button>
-                </div>`;
-            }
+            snap.forEach(child => {
+                const s = child.val();
+                if(s.section === section) { // تصفية حسب الشعبة
+                    list.innerHTML += `<div>${s.name} <button onclick="openPanel('${s.name}')">إدارة</button></div>`;
+                }
+            });
         });
     }
 
-    function editStudent(id) {
-        // هنا ستفتح واجهة إدخال الدرجات والتبليغ الخاص
-        alert("جارِ فتح واجهة إدارة الطالب: " + id);
+    function openPanel(name) {
+        document.getElementById('studentPanel').style.display = 'block';
+        document.getElementById('studentNameDisplay').innerText = "إدارة الطالب: " + name;
     }
 </script>
 </body>
