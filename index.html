@@ -990,6 +990,7 @@
         </div>
     </footer>
 
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -1046,7 +1047,7 @@
                     </p>
                     <ul>
                         <li><strong>روابط الاستبيان الإلكترونية:</strong> وهي أدوات رقمية تتيح للطلاب إمكانية تسجيل الشكاوى التي تواجههم، أو مشاركة آرائهم الشخصية ومقترحاتهم البناءة مع الإدارة مباشرة، مما أسهم بشكل واضح في تعزيز مستويات الثقة المتبادلة بين الطلاب ومدرستهم وعمل على تطوير البيئة التعليمية داخل المدرسة بشكل مستمر.</li>
-                        <li><strong>المنصات الرسمية على مواقع التواصل الاجتماعي:</strong> تمتلك المدرسة منصات إلكترونية رسمية نشطة، وتبرز من بينها القناء الرسمية للمدرسة على تطبيق تلغرام، والتي تُستخدم كأداة إعلامية أساسية للتواصل مع الطلاب وأولياء الأمور أولاً بأول ونشر كل ما يتعلق بـالتبليغات والتعليمات الرسمية، الجداول الدراسية الأسبوعية وجداول الامتحانات، والنتائج بمجرد صدورها لضمان وصولها السريع للجميع.</li>
+                        <li><strong>المنصات الرسمية على مواقع التواصل الاجتماعي:</strong> تمتلك المدرسة منصات إلكترونية رسمية نشطة، وتبرز من بينها القناة الرسمية للمدرسة على تطبيق تلغرام، والتي تُستخدم كأداة إعلامية أساسية للتواصل مع الطلاب وأولياء الأمور أولاً بأول ونشر كل ما يتعلق بـالتبليغات والتعليمات الرسمية، الجداول الدراسية الأسبوعية وجداول الامتحانات، والنتائج بمجرد صدورها لضمان وصولها السريع للجميع.</li>
                     </ul>
 
                     <h2 id="vision">رؤية مدرسة الجوادين والأهداف الاستراتيجية</h2>
@@ -1170,7 +1171,6 @@
             applyTranslations(lang);
         }
 
-        // دالة لتحديث حالة الزر العلوي (تسجيل الدخول / اسم الطالب)
         function updateHeaderAuthButton() {
             const savedStudent = localStorage.getItem('loggedStudent');
             const authBtn = document.getElementById('btnAuthHeader');
@@ -1213,8 +1213,6 @@
             });
         }
 
-        /* --- نظام إدارة الطلاب البرمجي الجديد والربط بـ Firebase --- */
-        
         function handleStudentGate() {
             const savedStudent = localStorage.getItem('loggedStudent');
             if (savedStudent) {
@@ -1260,7 +1258,6 @@
             });
         }
 
-        // معالجة رفع وحفظ استمارة التسجيل ومنع التكرار تماماً
         function processRegister() {
             const fullName = document.getElementById('regFullName').value.trim();
             const grade = document.getElementById('regGrade').value;
@@ -1277,7 +1274,6 @@
                 return;
             }
 
-            // منع التكرار: فحص الحسابات السابقة في Firebase
             database.ref('students').once('value').then((snapshot) => {
                 const allStudents = snapshot.val();
                 let exists = false;
@@ -1300,7 +1296,6 @@
                     return;
                 }
 
-                // تحويل الصورة الشخصية وحفظ البيانات بعد التأكد من عدم التكرار
                 const reader = new FileReader();
                 reader.readAsDataURL(photoFile);
                 reader.onload = function () {
@@ -1308,21 +1303,18 @@
 
                     let defaultGrades = {};
                     let subjects = [];
-                    // تحديد المواد حسب الصف
                     if (grade === '1' || grade === '2') {
                         subjects = ['عربي', 'اسلاميه', 'انكليزي', 'رياضيات', 'اجتماعيات', 'احياء', 'كيمياء', 'فيزياء', 'اخلاقية', 'فنية'];
                     } else if (grade === '3') {
                         subjects = ['عربي', 'اسلامية', 'ادب', 'اجتماعيات', 'رياضيات', 'انكليزي', 'احياء', 'فيزياء', 'كيمياء'];
                     }
 
-                    // تهيئة الدرجات للمراحل الزمنية بالترتيب الصحيح مع درجات نصف ونهاية السنة
                     const periods = ['كورس1_شهر1', 'كورس1_شهر2', 'نصف_السنة', 'كورس2_شهر1', 'كورس2_شهر2', 'نهاية_السنة'];
                     periods.forEach(p => {
                         defaultGrades[p] = {};
                         subjects.forEach(sub => {
-                            // شرط استثناء مادة الأدب للثالث متوسط في نصف السنة ونهاية السنة
                             if (grade === '3' && sub === 'ادب' && (p === 'نصف_السنة' || p === 'نهاية_السنة')) {
-                                // تترك فارغة وخالية للامتثال لشروط الثالث متوسط
+                                // استثناء مادة الأدب للثالث متوسط بنصف السنة ونهاية السنة
                             } else {
                                 defaultGrades[p][sub] = "لم تعلن بعد";
                             }
@@ -1373,7 +1365,6 @@
             });
         }
 
-        // جلب وبناء لوحة تحكم الطالب الكاملة بالتعديلات وهيكل الدرجات الجديد
         function loadStudentDashboard(fullName) {
             database.ref('students/' + fullName).once('value').then((snapshot) => {
                 const student = snapshot.val();
@@ -1384,7 +1375,6 @@
                 
                 let gradeText = student.grade === '1' ? 'الأول متوسط' : student.grade === '2' ? 'الثاني متوسط' : 'الثالث متوسط';
                 
-                // بناء التنبيه المخصص السريع (إن وجد في الأعلى)
                 let alertPvtHtml = '';
                 if(student.private_notifications && student.private_notifications.trim() !== "") {
                     alertPvtHtml = `
@@ -1394,7 +1384,6 @@
                     `;
                 }
 
-                // دالة بناء جداول الدرجات التفاعلية
                 const formatPeriod = (pKey, title) => {
                     let tableRows = '';
                     const pData = student.grades ? student.grades[pKey] : null;
@@ -1405,7 +1394,7 @@
                             tableRows += `<tr><td><strong>${sub}</strong></td><td style="${scoreStyle}">${score}</td></tr>`;
                         }
                     }
-                    if(!tableRows) return ''; // إذا لم تكن هناك درجات للجدول (كأن يكون تم استثناء الأدب بالكامل منه ولم يبق شيء)
+                    if(!tableRows) return ''; 
                     
                     return `
                         <div style="flex: 1; min-width: 220px;">
@@ -1418,23 +1407,23 @@
                     `;
                 };
 
-                // بناء الترتيب الزمني الجديد للجداول (درجات نصف السنة بعد الكورس الأول، ونهاية السنة بعد الكورس الثاني)
                 let gradesHtml = '';
                 gradesHtml += `
                     <div class="grade-section-title">📊نتائج امتحانات الكورس الأول </div>
                     <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
                         ${formatPeriod('كورس1_شهر1', 'الشهر الأول')}
                         ${formatPeriod('كورس1_شهر2', 'الشهر الثاني')}
+                        ${formatPeriod('نصف_السنة', 'نصف السنة')}
                     </div>
                     
                     <div class="grade-section-title">📊 نتائج امتحانات الكورس الثاني </div>
                     <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
                         ${formatPeriod('كورس2_شهر1', 'الشهر الأول')}
                         ${formatPeriod('كورس2_شهر2', 'الشهر الثاني')}
+                        ${formatPeriod('نهاية_السنة', 'نهاية السنة')}
                     </div>
                 `;
 
-                // بناء قسم التبليغات المخصصة للطالب من الأستاذ أسفل قائمة الدرجات
                 let teacherNotificationsHtml = `
                     <div class="dashboard-private-notifications">
                         <h4>✉️ التبليغات والرسائل الخاصة من الكادر التدريسي:</h4>
@@ -1446,7 +1435,6 @@
                     </div>
                 `;
 
-                // دمج كل الأقسام وعرضها داخل الـ Modal
                 content.innerHTML = `
                     ${alertPvtHtml}
                     <div class="student-dashboard-grid">
