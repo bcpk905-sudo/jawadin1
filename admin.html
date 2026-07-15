@@ -597,11 +597,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        const firebaseConfig = {
-            databaseURL: "https://jawadin-school1-default-rtdb.firebaseio.com"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
 
         let loggedIn = false;
         let currentSelectedGrade = 1; // 1 = أول, 2 = ثاني, 3 = ثالث
@@ -979,25 +974,29 @@
             }).catch(err => {
                 alert('خطأ أثناء إرسال التبليغ الخاص.');
             });
-            function loadStudents() {
-        const grade = document.getElementById('selectGrade').value;
-        const cls = document.getElementById('selectClass').value;
-        if(!grade) return;
-        
-        db.ref('students').orderByChild('grade').equalTo(grade).on('value', snap => {
-            const list = document.getElementById('studentsList');
-            list.innerHTML = "";
-            snap.forEach(s => {
-                const stu = s.val();
-                if(stu.classOption === cls || !cls) {
-                    list.innerHTML += `<div style="border-bottom:1px solid #ccc; padding:10px;">
-                        <strong>${stu.fullName}</strong>
-                        <button onclick="editStudent('${s.key}')">تعديل درجات/تبليغ</button>
+        function loadStudents() {
+    const grade = document.getElementById('selectGrade').value; // افترضت وجود select للصف
+    const cls = document.getElementById('selectClass').value; // افترضت وجود select للشعبة
+
+    // جلب البيانات من مسار الطلاب
+    db.ref('students').orderByChild('grade').equalTo(grade).once('value', (snapshot) => {
+        const list = document.getElementById('studentsList');
+        list.innerHTML = ''; // تفريغ القائمة
+        snapshot.forEach((childSnapshot) => {
+            const student = childSnapshot.val();
+            if (student.class === cls) { // تصفية حسب الشعبة
+                list.innerHTML += `
+                    <div class="student-item" onclick="openStudentDetails('${childSnapshot.key}')">
+                        ${student.fullName}
                     </div>`;
-                }
-            });
+            }
         });
-    }
+    });
+    const firebaseConfig = {
+    databaseURL: "https://jawadin-school1-default-rtdb.firebaseio.com" // تأكد أن هذا الرابط هو نفسه في الاثنين
+};
+firebase.initializeApp(firebaseConfig);
+}
     // ملاحظة: أكمل بناء دالة editStudent لفتح نافذة إدخال الدرجات والتبليغ الاختياري.
         }
     </script>
