@@ -1306,34 +1306,35 @@
                     const base64Image = reader.result;
 
                     let defaultGrades = {};
-                    let subjects = [];
-                    // تحديد المواد حسب الصف بدقة متناهية مطابقة للإدارة
-                    if (grade === '1' || grade === '2') {
-                        subjects = ['العربية', 'الاسلامية', 'الانكليزية', 'الرياضيات', 'الاجتماعيات', 'الاحياء', 'الكيمياء', 'الفيزياء', 'الاخلاقية', 'الفنية'];
-                    } else if (grade === '3') {
-                        subjects = ['العربية', 'الاسلامية', 'الادب', 'الاجتماعيات', 'الرياضيات', 'الانكليزية', 'الاحياء', 'الفيزياء', 'الكيمياء'];
-                    }
+let subjects = [];
 
-                    // تهيئة الدرجات للمراحل الزمنية بالترتيب الصحيح مع درجات نصف ونهاية السنة
-                    const periods = ['c1_m1', 'c1_m2', 'mid', 'c2_m1', 'c2_m2', 'final'];
-                    periods.forEach(p => {
-                        defaultGrades[p] = {};
-                        subjects.forEach(sub => {
-                            // شرط استثناء مادة الأدب للثالث متوسط في نصف السنة ونهاية السنة
-                            if (grade === '3' && sub === 'الادب' && (p === 'mid' || p === 'final')) {
-                                // تترك فارغة وخالية للامتثال لشروط الثالث متوسط
-                            } else {
-                                defaultGrades[p][sub] = "لم تعلن بعد";
-                            }
-                        });
-                    });
+// تحديد المواد حسب الصف
+if (grade === '1' || grade === '2') {
+    subjects = ['العربية', 'الاسلامية', 'الانكليزية', 'الرياضيات', 'الاجتماعيات', 'الاحياء', 'الكيمياء', 'الفيزياء', 'الاخلاقية', 'الفنية'];
+} else if (grade === '3') {
+    subjects = ['العربية', 'الاسلامية', 'الادب', 'الاجتماعيات', 'الرياضيات', 'الانكليزية', 'الاحياء', 'الفيزياء', 'الكيمياء'];
+}
 
-                    const studentData = {
-                        fullName, grade, classOption: classOpt, motherName, motherFatherName, phone, nationalId, password,
-                        photo: base64Image,
-                        grades: defaultGrades,
-                        private_notification: ""
-                    };
+const periods = ['c1_m1', 'c1_m2', 'mid', 'c2_m1', 'c2_m2', 'final'];
+
+periods.forEach(p => {
+    defaultGrades[p] = {};
+    subjects.forEach(sub => {
+        // التعديل هنا: تعيين قيمة واضحة بدلاً من تركها فارغة
+        if (grade === '3' && sub === 'الادب' && (p === 'mid' || p === 'final')) {
+            defaultGrades[p][sub] = "-"; // تعيين شرطة أو نص توضيحي
+        } else {
+            defaultGrades[p][sub] = "لم تعلن بعد";
+        }
+    });
+});
+
+const studentData = {
+    fullName, grade, classOption: classOpt, motherName, motherFatherName, phone, nationalId, password,
+    photo: base64Image,
+    grades: defaultGrades,
+    private_notification: ""
+};
 
                     database.ref('students/' + fullName).set(studentData, (error) => {
                         if (error) {
