@@ -1306,35 +1306,35 @@
                     const base64Image = reader.result;
 
                     let defaultGrades = {};
-let subjects = [];
+                    let subjects = [];
 
-// تحديد المواد حسب الصف
-if (grade === '1' || grade === '2') {
-    subjects = ['العربية', 'الاسلامية', 'الانكليزية', 'الرياضيات', 'الاجتماعيات', 'الاحياء', 'الكيمياء', 'الفيزياء', 'الاخلاقية', 'الفنية'];
-} else if (grade === '3') {
-    subjects = ['العربية', 'الاسلامية', 'الادب', 'الاجتماعيات', 'الرياضيات', 'الانكليزية', 'الاحياء', 'الفيزياء', 'الكيمياء'];
-}
+                    // تحديد المواد حسب الصف
+                    if (grade === '1' || grade === '2') {
+                        subjects = ['العربية', 'الاسلامية', 'الانكليزية', 'الرياضيات', 'الاجتماعيات', 'الاحياء', 'الكيمياء', 'الفيزياء', 'الاخلاقية', 'الفنية'];
+                    } else if (grade === '3') {
+                        subjects = ['العربية', 'الاسلامية', 'الادب', 'الاجتماعيات', 'الرياضيات', 'الانكليزية', 'الاحياء', 'الفيزياء', 'الكيمياء'];
+                    }
 
-const periods = ['c1_m1', 'c1_m2', 'mid', 'c2_m1', 'c2_m2', 'final'];
+                    const periods = ['c1_m1', 'c1_m2', 'mid', 'c2_m1', 'c2_m2', 'final'];
 
-periods.forEach(p => {
-    defaultGrades[p] = {};
-    subjects.forEach(sub => {
-        // التعديل هنا: تعيين قيمة واضحة بدلاً من تركها فارغة
-        if (grade === '3' && sub === 'الادب' && (p === 'mid' || p === 'final')) {
-            defaultGrades[p][sub] = "-"; // تعيين شرطة أو نص توضيحي
-        } else {
-            defaultGrades[p][sub] = "لم تعلن بعد";
-        }
-    });
-});
+                    periods.forEach(p => {
+                        defaultGrades[p] = {};
+                        subjects.forEach(sub => {
+                            // التعديل هنا: تعيين قيمة واضحة بدلاً من تركها فارغة
+                            if (grade === '3' && sub === 'الادب' && (p === 'mid' || p === 'final')) {
+                                defaultGrades[p][sub] = "-"; // تعيين شرطة أو نص توضيحي
+                            } else {
+                                defaultGrades[p][sub] = "لم تعلن بعد";
+                            }
+                        });
+                    });
 
-const studentData = {
-    fullName, grade, classOption: classOpt, motherName, motherFatherName, phone, nationalId, password,
-    photo: base64Image,
-    grades: defaultGrades,
-    private_notification: ""
-};
+                    const studentData = {
+                        fullName, grade, classOption: classOpt, motherName, motherFatherName, phone, nationalId, password,
+                        photo: base64Image,
+                        grades: defaultGrades,
+                        private_notification: ""
+                    };
 
                     database.ref('students/' + fullName).set(studentData, (error) => {
                         if (error) {
